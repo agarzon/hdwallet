@@ -4,8 +4,7 @@ services:
   webphp:
     image: webdevops/php-nginx-dev
     ports:
-      - "8884:80"
-      - "443:443"
+      - "8420:80"
     environment:
       WEB_DOCUMENT_INDEX: "index.html"
     volumes:

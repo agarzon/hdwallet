@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title></title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <script src="js/jquery.min.js"></script>
     <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
     <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
-
+    <script src="js/nets.js"></script>
     <script>
     var bitcore = require('bitcore-lib');
     var Mnemonic = require('bitcore-mnemonic');
 
     // Lets use the potcoin network
-    var POTNet = new bitcore.Networks.add({
-      name: 'potcoin',
-      alias: 'potcoin',
-      pubkeyhash: 0x37,
-      privatekey: 0xB7,
-      scripthash: 0x05,
-      xpubkey:  0x213045C1,
-      xprivkey: 0x213045C0,
-      port: 4200
-    });
+    var AltNet = new bitcore.Networks.add(PotNet);
+    bitcore.Networks.defaultNetwork = AltNet;
 
-    bitcore.Networks.defaultNetwork = POTNet;
-
-
+    // Word generation
     //var code = new Mnemonic(Mnemonic.Words.SPANISH);// Spanish
-    var code = new Mnemonic();// English
-    var nemo =code.toString(); // mercy near someone unaware picture arrange rural master core access absurd deer
-    console.log(nemo);
+    //var code = new Mnemonic();// English
+    //var nemo =code.toString(); // film speed midnight cave come federal horror unusual cute trap congress inherit
+    //console.log(nemo);
+
+    // Get private from seed with protection
+    var code = new Mnemonic('film speed midnight cave come federal horror unusual cute trap congress inherit');
     var xpriv = code.toHDPrivateKey('superPassword');
-    console.log('xpriv: ' + xpriv);
+    console.log('xpriv: ' + xpriv); // 83eRLJFkhQGDSk2eGZmsqfJuwpEKKDyCMwb99AL3b8VEZzvCRPafNp1CQLm6cfAwMZz4hoFUV744ZvbE5JNgmZDVMXRtQgMALJPiM8evLSnNTdC5
 
-    var code = 'select scout crash enforce riot rival spring whale hollow radar rule sentence';
-    var valid = Mnemonic.isValid(code);
-    console.log('is valid: ' + valid);
+    // Validate seed
+    //var code = 'select scout crash enforce riot rival spring whale hollow radar rule sentence';
+    //var valid = Mnemonic.isValid(code);
+    //console.log('is valid: ' + valid);
 
-    var privateKey = new bitcore.PrivateKey();
+    // Validate address
+    /*if (bitcore.Address.isValid('PRzNVTKRdm3U2feaZhrk13VfQUxp5J7BqK')) {
+        console.log('Address is valid');
+    }*/
+
+    // Traditional address generation
+    /*var privateKey = new bitcore.PrivateKey();
     console.log('private : ' + privateKey);
     var address = privateKey.toAddress();
-    console.log('address : ' + address);
+    console.log('address : ' + address);*/
 
 
-/*    var xprv = bitcore.HDPrivateKey.fromSeed(nemo);
-    console.log(xprv);*/
+    /*    var xprv = bitcore.HDPrivateKey.fromSeed(nemo);
+        console.log(xprv);*/
 
 
 
@@ -55,8 +55,8 @@
     var derived = hdPrivateKey.derive("m/0'");
     var derivedByNumber = hdPrivateKey.derive(1).derive(2, true);
     var derivedByArgument = hdPrivateKey.derive("m/1/2'");
-    if(derivedByNumber.xprivkey === derivedByArgument.xprivkey){
-        console.log('Ok?');
+    if (derivedByNumber.xprivkey === derivedByArgument.xprivkey) {
+        console.log('Derived marches');
     };
 
     var address = derived.privateKey.toAddress();
@@ -64,10 +64,11 @@
 
     // obtain HDPublicKey
     var hdPublicKey = hdPrivateKey.hdPublicKey;
-    console.log(hdPublicKey);
+    console.log('HDPublicKey: ' + hdPublicKey);
     </script>
 </head>
-<body>
 
+<body>
 </body>
+
 </html>
