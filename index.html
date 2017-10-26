@@ -9,7 +9,7 @@
     <div id="qrcode"></div>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/vue/dist/vue.js"></script>
+    <script src="bower_components/vue/dist/vue.min.js"></script>
     <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
     <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
     <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
@@ -20,14 +20,14 @@
     <script>
 
     var bitcore = require('bitcore-lib');
-    var Insight = require('bitcore-explorers').Insight;
+    var explorers = require('bitcore-explorers');
     var Mnemonic = require('bitcore-mnemonic');
 
-    // Lets use the potcoin network
+    // Set potcoin network as default
     var AltNet = new bitcore.Networks.add(PotNet);
     bitcore.Networks.defaultNetwork = AltNet;
 
-    var insight = new Insight('https://chain.potcoin.com');
+    var insight = new explorers.Insight('https://chain.potcoin.com');
 
     // Word generation
     //var code = new Mnemonic(Mnemonic.Words.SPANISH);// Spanish
@@ -78,49 +78,64 @@
     console.log((derivedAddress1 === derivedAddress2)); // They are the same
 */
     // Address from m/44" 81 for potcoin https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings
-    var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true).publicKey).toString();
-    console.log(derivedAddress44); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
+    //var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true).publicKey);
+    var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true);
+    var addr = new bitcore.Address(derived.publicKey);
+    var pubkey = addr.toString();
+    var priv = derived.privateKey.toWIF();
 
-    for (var i = 0; i < 5; i++) {
-        var derivedAddresses = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(i, true).publicKey).toString();
-        console.log(derivedAddresses);
+    console.log(derived); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
+    console.log(addr);
+    console.log(pubkey);
+    console.log(priv);
+
+    if (bitcore.PrivateKey.isValid(priv)){
+        console.log('PrivateKey is valid');
     }
+
+    /*for (var i = 0; i < 5; i++) {
+        var derivedAddresses = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(i, true).publicKey);
+        console.log(derivedAddresses.toString());
+    }*/
 
     // Convenient way to get utxos
     insight.getUnspentUtxos('PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2', function(err, utxos) {
-        console.log(utxos);
-        console.log(err);
-
-        var AddressPrivateKey = new bitcore.PrivateKey(derivedAddress44.privateKey);
-        console.log(AddressPrivateKey);
+        if (err) {
+            console.error(err);
+        } else {
+            // Prepare transaction and send
+        }
 
         var transaction = new bitcore.Transaction()
             .from(utxos)
-            .to('PNcmn5pS5pDjriQcAE523SM7wAiaHTLNmv', 000100000)
-            .change('PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2')
+            .to('PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE', 000100000)
             //.fee(00003000)
-            .sign(AddressPrivateKey);
+            .change('PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2')
+            .sign(priv);
 
         console.log(transaction);
-        console.log("transaction = " + transaction.verify());
+        console.log("Verify = " + transaction.verify());
         console.log("Signature = " + transaction.isFullySigned());
 
-        //var txSerialized = transaction.serialize();
-        /*
+        var txSerialized = transaction.serialize();
+        console.log(txSerialized);
+
         insight.broadcast(txSerialized, function(err, txId) {
             if (err) {
-                console.log('Error!:'+err);
+                console.log('Error!:' +err);
             } else {
                 console.log('Successfully sent: '+txId);
             }
-        });*/
+        });
 
+        //var tx = bitcore.Transaction(txSerialized);
+        //console.log(tx.toJSON());
 
     });
 
 
     $(function() {
-        $('#qrcode').qrcode("this plugin is great");
+        $('#qrcode').qrcode("PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2");
     });
 
     </script>
