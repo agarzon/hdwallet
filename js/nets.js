@@ -1,4 +1,9 @@
-var PotNet = {
+// Yeap.... you can add more coins here
+
+(function(){
+  "use strict";
+
+  var PotNet = {
     name: 'potcoin',
     alias: 'potcoin',
     pubkeyhash: 0x37,
@@ -8,5 +13,5 @@ var PotNet = {
     xprivkey: 0x213045C0,
     port: 4200
 };
-
-// Yeap.... you can add more coins here
+    return PotNet;
+})();

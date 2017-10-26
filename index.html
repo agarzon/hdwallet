@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title></title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="qrcode"></div>
+
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/vue/dist/vue.js"></script>
     <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
     <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
     <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
     <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="js/nets.js"></script>
+    <script src="js/wallet.js"></script>
     <script>
+
     var bitcore = require('bitcore-lib');
     var Insight = require('bitcore-explorers').Insight;
     var Mnemonic = require('bitcore-mnemonic');
@@ -17,8 +26,8 @@
     // Lets use the potcoin network
     var AltNet = new bitcore.Networks.add(PotNet);
     bitcore.Networks.defaultNetwork = AltNet;
-    var insight = new Insight('https://chain.potcoin.com', AltNet);
 
+    var insight = new Insight('https://chain.potcoin.com');
 
     // Word generation
     //var code = new Mnemonic(Mnemonic.Words.SPANISH);// Spanish
@@ -32,16 +41,16 @@
     //console.log(xpriv); // 83eRLJFkhQGDSk2eGZmsqfJuwpEKKDyCMwb99AL3b8VEZzvCRPafNp1CQLm6cfAwMZz4hoFUV744ZvbE5JNgmZDVMXRtQgMALJPiM8evLSnNTdC5
 
     // Validate seed
-    //var code = 'select scout crash enforce riot rival spring whale hollow radar rule sentence';
-    //var valid = Mnemonic.isValid(code);
-    //console.log('is valid: ' + valid);
+    if (Mnemonic.isValid('film speed midnight cave come federal horror unusual cute trap congress inherit')) {
+        console.log('Seed is valid');
+    }
 
     // Validate address
-    /*if (bitcore.Address.isValid('PRzNVTKRdm3U2feaZhrk13VfQUxp5J7BqK')) {
+    if (bitcore.Address.isValid('PRzNVTKRdm3U2feaZhrk13VfQUxp5J7BqK')) {
         console.log('Address is valid');
-    }*/
+    }
 
-    // Traditional address generation
+    // Traditional single address generation
     /*
     var privateKey = new bitcore.PrivateKey();
     console.log('private : ' + privateKey);
@@ -49,16 +58,15 @@
     console.log('address : ' + address);
     */
 
+    /**
+     * HD wallets generation
+     */
 
     var hdPrivateKey = new bitcore.HDPrivateKey(xpriv);
-    console.log(hdPrivateKey); // Funny, the same as xpriv
+    console.log(hdPrivateKey);
     var hdPublicKey = hdPrivateKey.hdPublicKey;
     console.log(hdPublicKey);
-
-
-    /*    var firstHDAddress = new bitcore.Address(hdPublicKey.publicKey).toString();
-        console.log(firstHDAddress);
-    */
+/*
     // Address from hdPublicKey
     var derivedAddress1 = new bitcore.Address(hdPublicKey.derive(0).publicKey).toString(); // PNcmn5pS5pDjriQcAE523SM7wAiaHTLNmv
     console.log(derivedAddress1);
@@ -68,7 +76,7 @@
     console.log(derivedAddress2);
 
     console.log((derivedAddress1 === derivedAddress2)); // They are the same
-
+*/
     // Address from m/44" 81 for potcoin https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings
     var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true).publicKey).toString();
     console.log(derivedAddress44); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
@@ -109,16 +117,12 @@
 
 
     });
+
+
+    $(function() {
+        $('#qrcode').qrcode("this plugin is great");
+    });
+
     </script>
-</head>
-
-<body>
-    <div id="qrcode"></div>
 </body>
-<script>
-$(function() {
-    $('#qrcode').qrcode("this plugin is great");
-});
-</script>
-
 </html>
