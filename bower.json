@@ -1,0 +1,24 @@
+{
+  "name": "walletdemo",
+  "homepage": "https://github.com/agarzon/hdwallet",
+  "authors": [
+    "Alexander Garzon <venehosting@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bitcore-explorers": "^1.0.1",
+    "bitcore-mnemonic": "^1.2.5",
+    "bitcore-lib": "^0.14.0",
+    "jquery-qrcode": "*",
+    "jquery": "^3.2.1"
+  }
+}
