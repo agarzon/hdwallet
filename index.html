@@ -24,7 +24,7 @@
     // Get private from seed with protection
     var code = new Mnemonic('film speed midnight cave come federal horror unusual cute trap congress inherit');
     var xpriv = code.toHDPrivateKey('superPassword');
-    console.log('xpriv: ' + xpriv); // 83eRLJFkhQGDSk2eGZmsqfJuwpEKKDyCMwb99AL3b8VEZzvCRPafNp1CQLm6cfAwMZz4hoFUV744ZvbE5JNgmZDVMXRtQgMALJPiM8evLSnNTdC5
+    //console.log(xpriv); // 83eRLJFkhQGDSk2eGZmsqfJuwpEKKDyCMwb99AL3b8VEZzvCRPafNp1CQLm6cfAwMZz4hoFUV744ZvbE5JNgmZDVMXRtQgMALJPiM8evLSnNTdC5
 
     // Validate seed
     //var code = 'select scout crash enforce riot rival spring whale hollow radar rule sentence';
@@ -37,34 +37,41 @@
     }*/
 
     // Traditional address generation
-    /*var privateKey = new bitcore.PrivateKey();
+    /*
+    var privateKey = new bitcore.PrivateKey();
     console.log('private : ' + privateKey);
     var address = privateKey.toAddress();
-    console.log('address : ' + address);*/
+    console.log('address : ' + address);
+    */
 
 
-    /*    var xprv = bitcore.HDPrivateKey.fromSeed(nemo);
-        console.log(xprv);*/
-
-
-
-    var HDPrivateKey = bitcore.HDPrivateKey;
-
-    var hdPrivateKey = new HDPrivateKey();
-    var retrieved = new HDPrivateKey(xpriv);
-    var derived = hdPrivateKey.derive("m/0'");
-    var derivedByNumber = hdPrivateKey.derive(1).derive(2, true);
-    var derivedByArgument = hdPrivateKey.derive("m/1/2'");
-    if (derivedByNumber.xprivkey === derivedByArgument.xprivkey) {
-        console.log('Derived marches');
-    };
-
-    var address = derived.privateKey.toAddress();
-    console.log(address);
-
-    // obtain HDPublicKey
+    var hdPrivateKey = new bitcore.HDPrivateKey(xpriv);
+    console.log(hdPrivateKey); // Funny, the same as xpriv
     var hdPublicKey = hdPrivateKey.hdPublicKey;
-    console.log('HDPublicKey: ' + hdPublicKey);
+    console.log(hdPublicKey);
+
+
+    var firstHDAddress = new bitcore.Address(hdPublicKey.publicKey).toString();
+    console.log(firstHDAddress);
+
+    // Address from hdPublicKey
+    var derivedAddress1 = new bitcore.Address(hdPublicKey.derive(0).publicKey).toString();
+    console.log(derivedAddress1);
+
+    // Address from hdPrivateKey
+    var derivedAddress2 = new bitcore.Address(hdPrivateKey.derive(0).publicKey).toString();
+    console.log(derivedAddress2);
+
+    console.log((derivedAddress1 === derivedAddress2)); // They are the same
+
+    // Address from m/44" 81 for potcoin https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings
+    var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true).publicKey).toString();
+    console.log(derivedAddress44); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
+
+    for (var i = 0; i < 10; i++) {
+        var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(i, true).publicKey).toString();
+        console.log(derivedAddress44); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
+    }
     </script>
 </head>
 
