@@ -7,6 +7,8 @@
     <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
     <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
     <script src="js/nets.js"></script>
+    <script src="js/jquery.qrcode.min.js"></script>
+
     <script>
     var bitcore = require('bitcore-lib');
     var Mnemonic = require('bitcore-mnemonic');
@@ -76,6 +78,12 @@
 </head>
 
 <body>
-</body>
+    <div id="qrcode"></div>
 
+    </body>
+<script>
+    $(function() {
+        $('#qrcode').qrcode("this plugin is great");
+    });
+</script>
 </html>
