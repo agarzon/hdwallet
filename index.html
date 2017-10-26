@@ -5,17 +5,21 @@
     <title></title>
     <script src="js/jquery.min.js"></script>
     <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
+    <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
     <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
     <script src="js/nets.js"></script>
     <script src="js/jquery.qrcode.min.js"></script>
 
     <script>
     var bitcore = require('bitcore-lib');
+    var Insight = require('bitcore-explorers').Insight;
     var Mnemonic = require('bitcore-mnemonic');
 
     // Lets use the potcoin network
     var AltNet = new bitcore.Networks.add(PotNet);
     bitcore.Networks.defaultNetwork = AltNet;
+    var insight = new Insight('https://chain.potcoin.com', AltNet);
+
 
     // Word generation
     //var code = new Mnemonic(Mnemonic.Words.SPANISH);// Spanish
@@ -53,15 +57,15 @@
     console.log(hdPublicKey);
 
 
-    var firstHDAddress = new bitcore.Address(hdPublicKey.publicKey).toString();
+/*    var firstHDAddress = new bitcore.Address(hdPublicKey.publicKey).toString();
     console.log(firstHDAddress);
-
+*/
     // Address from hdPublicKey
-    var derivedAddress1 = new bitcore.Address(hdPublicKey.derive(0).publicKey).toString();
+    var derivedAddress1 = new bitcore.Address(hdPublicKey.derive(0).publicKey).toString(); // PNcmn5pS5pDjriQcAE523SM7wAiaHTLNmv
     console.log(derivedAddress1);
 
     // Address from hdPrivateKey
-    var derivedAddress2 = new bitcore.Address(hdPrivateKey.derive(0).publicKey).toString();
+    var derivedAddress2 = new bitcore.Address(hdPrivateKey.derive(0).publicKey).toString(); // PNcmn5pS5pDjriQcAE523SM7wAiaHTLNmv
     console.log(derivedAddress2);
 
     console.log((derivedAddress1 === derivedAddress2)); // They are the same
@@ -70,10 +74,47 @@
     var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true).publicKey).toString();
     console.log(derivedAddress44); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
 
-    for (var i = 0; i < 10; i++) {
-        var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(i, true).publicKey).toString();
-        console.log(derivedAddress44); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
+    for (var i = 0; i < 5; i++) {
+        var derivedAddresses = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(i, true).publicKey).toString();
+        console.log(derivedAddresses);
     }
+
+    // Convenient way to get utxos
+    insight.getUnspentUtxos('PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2', function(err, utxos) {
+      console.log(utxos);
+      console.log(err);
+
+        var AddressPrivateKey = new bitcore.PrivateKey(derivedAddress44.privateKey);
+        console.log(AddressPrivateKey);
+
+        var transaction = new bitcore.Transaction()
+            .from(utxos)
+            .to('PNcmn5pS5pDjriQcAE523SM7wAiaHTLNmv', 000100000)
+            .change('PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2')
+            //.fee(00003000)
+            .sign(AddressPrivateKey);
+
+            console.log(transaction);
+            console.log("transaction = "+transaction.verify() );
+            console.log("Signature = "+transaction.isFullySigned());
+
+            //var txSerialized = transaction.serialize();
+            /*
+            insight.broadcast(txSerialized, function(err, txId) {
+                if (err) {
+                    console.log('Error!:'+err);
+                } else {
+                    console.log('Successfully sent: '+txId);
+                }
+            });*/
+
+
+    });
+
+
+
+
+
     </script>
 </head>
 
