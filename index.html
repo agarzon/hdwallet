@@ -7,9 +7,10 @@
 
 <body>
     <div id="qrcode"></div>
+    <p id="addr"></p>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/vue/dist/vue.min.js"></script>
+    <!-- <script src="bower_components/vue/dist/vue.min.js"></script> -->
     <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
     <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
     <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
@@ -45,10 +46,6 @@
         console.log('Seed is valid');
     }
 
-    // Validate address
-    if (bitcore.Address.isValid('PRzNVTKRdm3U2feaZhrk13VfQUxp5J7BqK')) {
-        console.log('Address is valid');
-    }
 
     // Traditional single address generation
     /*
@@ -56,6 +53,14 @@
     console.log('private : ' + privateKey);
     var address = privateKey.toAddress();
     console.log('address : ' + address);
+
+    var address = 'PKUMXPp5A751ZhhiNTT2ujcxqq5f2mE15z';
+    var PrivateKey = '3b2dccf603658fea1e429767d8f5740f9c188282dc723c3c02c11e4512a363e2';
+
+    // Make a PrivateKey exportable
+    var toWIF = new bitcore.PrivateKey('3b2dccf603658fea1e429767d8f5740f9c188282dc723c3c02c11e4512a363e2').toWIF();
+    console.log('WIF: ' + toWIF);
+
     */
 
     /**
@@ -64,78 +69,82 @@
 
     var hdPrivateKey = new bitcore.HDPrivateKey(xpriv);
     console.log(hdPrivateKey);
-    var hdPublicKey = hdPrivateKey.hdPublicKey;
-    console.log(hdPublicKey);
-/*
-    // Address from hdPublicKey
-    var derivedAddress1 = new bitcore.Address(hdPublicKey.derive(0).publicKey).toString(); // PNcmn5pS5pDjriQcAE523SM7wAiaHTLNmv
-    console.log(derivedAddress1);
+    //var hdPublicKey = hdPrivateKey.hdPublicKey;
+    //console.log(hdPublicKey); // kind of useless, since won't be used for derivation
 
-    // Address from hdPrivateKey
-    var derivedAddress2 = new bitcore.Address(hdPrivateKey.derive(0).publicKey).toString(); // PNcmn5pS5pDjriQcAE523SM7wAiaHTLNmv
-    console.log(derivedAddress2);
-
-    console.log((derivedAddress1 === derivedAddress2)); // They are the same
-*/
     // Address from m/44" 81 for potcoin https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings
-    //var derivedAddress44 = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true).publicKey);
-    var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true);
-    var addr = new bitcore.Address(derived.publicKey);
-    var pubkey = addr.toString();
-    var priv = derived.privateKey.toWIF();
+    var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true); // money here! PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2
+    //var derived = hdPrivateKey.derive("m/44'/0'/0'").derive(0); // Confirmed perfect with https://iancoleman.github.io/bip39/ but fail to receive money
+    //var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1); // testing no hardened. PFdzfENGEYdfXn6S8AZvRSijKpHixautkq
+    var PrivateKey = derived.privateKey.toWIF();
+    var publicKey = new bitcore.Address(derived.publicKey);
 
-    console.log(derived); // PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2 working and confirmed
-    console.log(addr);
-    console.log(pubkey);
-    console.log(priv);
+    console.log(derived.publicKey.toString()); // PublicKey
+    var address = publicKey.toString();
+    console.log(address); // Address
+    console.log(PrivateKey); // PrivateKey
 
-    if (bitcore.PrivateKey.isValid(priv)){
+/**
+ * Validations
+ */
+/*
+    if (bitcore.PrivateKey.isValid(PrivateKey)){
         console.log('PrivateKey is valid');
     }
 
-    /*for (var i = 0; i < 5; i++) {
-        var derivedAddresses = new bitcore.Address(hdPrivateKey.derive("m/44'/81'/0'/0").derive(i, true).publicKey);
-        console.log(derivedAddresses.toString());
-    }*/
+    if (bitcore.PublicKey.isValid(derived.publicKey.toString())){
+        console.log('PublicKey is valid');
+    }
+
+    // Validate address
+    if (bitcore.Address.isValid(publicKey.toString())) {
+        console.log('Address is valid');
+    }
+*/
+
+
+    /*var = xxx = bitcore.Unit.fromMilis(81.99).toSatoshis() // correct
+    console.info(xxx);*/
 
     // Convenient way to get utxos
-    insight.getUnspentUtxos('PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2', function(err, utxos) {
+    insight.getUnspentUtxos(address, function(err, utxos) {
         if (err) {
             console.error(err);
+            return false;
         } else {
             // Prepare transaction and send
+            var transaction = new bitcore.Transaction()
+                .from(utxos)
+                //.to('PFgp8JfpqxkCk9GtmSZWr8FodG8oYiwE1J', 001000000) // POLONIEX
+                .to('PKUMXPp5A751ZhhiNTT2ujcxqq5f2mE15z', 8000) // traditional
+                //.fee(100000)
+                .change(address)
+                .sign(derived.privateKey);
+                //.sign(PrivateKey);
+
+            console.log(transaction);
+            console.log("Verify = " + transaction.verify());
+            console.log("Signature = " + transaction.isFullySigned());
+
+            var txSerialized = transaction.serialize();
+            //console.log(txSerialized);
+
+            //throw new Error("STOP");
+            insight.broadcast(txSerialized, function(err, txId) {
+                if (err) {
+                    //console.error(err);
+                    //console.log(JSON.stringify(err));
+                } else {
+                    console.log('Successfully sent: '+txId);
+                }
+            });
         }
-
-        var transaction = new bitcore.Transaction()
-            .from(utxos)
-            .to('PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE', 010000000)
-            //.fee(100000)
-            .change('PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2')
-            .sign(priv);
-
-        console.log(transaction);
-        console.log("Verify = " + transaction.verify());
-        console.log("Signature = " + transaction.isFullySigned());
-
-        var txSerialized = transaction.serialize();
-        console.log(txSerialized);
-
-        insight.broadcast(txSerialized, function(err, txId) {
-            if (err) {
-                console.log('Error!:' +err);
-            } else {
-                console.log('Successfully sent: '+txId);
-            }
-        });
-
-        //var tx = bitcore.Transaction(txSerialized);
-        //console.log(tx.toJSON());
-
     });
 
 
     $(function() {
-        $('#qrcode').qrcode("PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2");
+        $('#qrcode').qrcode(address);
+        $('#addr').text(address);
     });
 
     </script>
