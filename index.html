@@ -73,9 +73,9 @@
     //console.log(hdPublicKey); // kind of useless, since won't be used for derivation
 
     // Address from m/44" 81 for potcoin https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings
-    var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true); // money here! PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2
+    //var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true); // money here! PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2
     //var derived = hdPrivateKey.derive("m/44'/0'/0'").derive(0); // Confirmed perfect with https://iancoleman.github.io/bip39/ but fail to receive money
-    //var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1); // testing no hardened. PFdzfENGEYdfXn6S8AZvRSijKpHixautkq
+    var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1); // testing no hardened. PFdzfENGEYdfXn6S8AZvRSijKpHixautkq
     var PrivateKey = derived.privateKey.toWIF();
     var publicKey = new bitcore.Address(derived.publicKey);
 
@@ -116,18 +116,18 @@
             var transaction = new bitcore.Transaction()
                 .from(utxos)
                 //.to('PFgp8JfpqxkCk9GtmSZWr8FodG8oYiwE1J', 001000000) // POLONIEX
-                .to('PKUMXPp5A751ZhhiNTT2ujcxqq5f2mE15z', 8000) // traditional
+                .to('PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE', 50000) // potwallet
                 //.fee(100000)
                 .change(address)
-                .sign(derived.privateKey);
-                //.sign(PrivateKey);
+                //.sign(derived.privateKey);
+                .sign(PrivateKey);
 
             console.log(transaction);
             console.log("Verify = " + transaction.verify());
             console.log("Signature = " + transaction.isFullySigned());
 
             var txSerialized = transaction.serialize();
-            //console.log(txSerialized);
+            console.log(txSerialized);
 
             //throw new Error("STOP");
             insight.broadcast(txSerialized, function(err, txId) {
