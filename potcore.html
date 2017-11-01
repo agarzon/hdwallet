@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="qrcode"></div>
+    <p id="addr"></p>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/vue/dist/vue.min.js"></script>
+    <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/bundle.js"></script>
+    <script>
+    var bitcore = require('bitcore');
+    var BIP39 = bitcore.BIP39;
+    var BIP39WordlistEn = bitcore.BIP39WordlistEn;
+    var HierarchicalKey = bitcore.HierarchicalKey;
+    var Address = bitcore.Address;
+    var Transaction = bitcore.Transaction;
+    var TransactionBuilder = bitcore.TransactionBuilder;
+    var PeerManager = bitcore.PeerManager;
+    var Peer = bitcore.Peer;
+    var PeerManager = bitcore.PeerManager;
+    var networks = bitcore.networks;
+    var coinUtil = bitcore.util;
+    var WalletKey = bitcore.WalletKey;
+
+
+    //console.log(BIP39WordlistEn);
+
+    var phrase = BIP39.mnemonic(BIP39WordlistEn); // Generate 12 words
+    console.log(phrase);
+
+    var seed = BIP39.mnemonic2seed('film speed midnight cave come federal horror unusual cute trap congress inherit', 'superPassword');
+    //console.log(seed.toString('hex'));
+
+    var hkey = HierarchicalKey.seed(seed);
+    var derivation = "m/44'/81'/0'/0";
+
+    //console.log('BIP32 Root Key: ' + hkey.extendedPrivateKeyString());
+    //console.log('BIP32 Root Public Key: ' + hkey.extendedPublicKeyString());
+    //console.log('BIP32 Derivation Path: ' + derivation);
+    //console.log('BIP32 Extended Private Key: ' + hkey.derive("m/44'/81'/0'/0").extendedPrivateKeyString());
+    //console.log('BIP32 Extended Public Key (addresses only): ' + hkey.derive("m/44'/81'/0'/0").extendedPublicKeyString());
+
+    console.log('0 address: ' + Address.fromPubKey(hkey.derive("m/44'/81'/0'/0/0").eckey.public).toString());
+    console.log('0 public: ' + bitcore.buffertools.toHex(hkey.derive("m/44'/81'/0'/0/0").eckey.public));
+    console.log('0 private: ' + bitcore.buffertools.toHex(hkey.derive("m/44'/81'/0'/0/0").eckey.private));
+
+    var priv = '7ab172cc2ef7042db17632bd67476605809c5459a4071756f98303b4e9cd229a';
+    var wk = new WalletKey();
+
+    wk.fromObj({ priv: priv });
+    var o = wk.storeObj();
+    console.log(o.priv);
+
+
+
+
+
+
+
+
+    // Unspent transactions can be found via the insight.bitcore.io or blockchain.info APIs
+    var unspent = [{ "address": "PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2", "txid": "5f0c7e7a2106c863d4e38ba93e87a4c09a18394686e0663a0afcf028a3b7857f", "vout": 1, "ts": 1509290549, "scriptPubKey": "21022a64689f4d6d07d10fc6a95e263f5096980c18f0a2c87d5e7a5702ad3119fd8fac", "amount": 4.99246411, "confirmations": 6, "confirmationsFromCache": true }]
+
+
+
+
+
+      var peerman = new PeerManager();
+      peerman.addPeer(new Peer('104.25.245.27', 4200));
+
+      peerman.on('connect', function() {
+        //var conn = peerman.getActiveConnection();
+        var conn = true;
+        if (conn) {
+            // define transaction output
+            var outs = [{
+                address: 'PFgp8JfpqxkCk9GtmSZWr8FodG8oYiwE1J',
+                amount: 0.01
+            }];
+            // set change address
+            var opts = {
+                remainderOut: {
+                    address: 'PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2'
+                }
+            };
+            var tx = new TransactionBuilder(opts)
+                .setUnspent(unspent)
+                .setOutputs(outs)
+                .sign(['UD4f4bFYRaC5SCF6Wy7xZH4B5YYqmrVKue1sTLTSsz7LEXG2uksL'])
+                .build();
+
+            var txid = tx.getHash().toString('hex');
+            console.log('Created transaction with txid ' + txid);
+            var raw_tx = tx.serialize().toString('hex');
+            console.log('Transaction raw hex dump:');
+            console.log('-------------------------------------');
+            console.log(raw_tx);
+            console.log('-------------------------------------');
+          // finally, send transaction to the bitcoin network
+          //conn.sendTx(tx);
+
+          // for now, the network won't respond in any case
+          // (transaction accepted, transaction rejected)
+          // in the future, we may listen to 'reject' message
+          // see https://gist.github.com/gavinandresen/7079034
+        }
+      });
+
+      peerman.start();
+
+
+
+
+    $(function() {
+        var address = 'fake';
+        $('#qrcode').qrcode(address);
+        $('#addr').text(address);
+    });
+    </script>
+</body>
+
+</html>
