@@ -1,152 +1,152 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title></title>
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <head>
+        <title></title>
+        <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
 
-<body>
-    <div id="qrcode"></div>
-    <p id="addr"></p>
+    <body>
+        <div id="qrcode"></div>
+        <p id="addr"></p>
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/vue/dist/vue.min.js"></script>
-    <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
-    <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
-    <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
-    <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="js/nets.js"></script>
-    <script src="js/wallet.js"></script>
-    <script>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/vue/dist/vue.min.js"></script>
+        <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
+        <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
+        <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
+        <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="js/nets.js"></script>
+        <script src="js/wallet.js"></script>
+        <script>
 
-    var bitcore = require('bitcore-lib');
-    var explorers = require('bitcore-explorers');
-    var Mnemonic = require('bitcore-mnemonic');
+        var bitcore = require('bitcore-lib');
+        var explorers = require('bitcore-explorers');
+        var Mnemonic = require('bitcore-mnemonic');
 
-    // Set potcoin network as default
-    var AltNet = new bitcore.Networks.add(PotNet);
-    bitcore.Networks.defaultNetwork = AltNet;
+        // Set potcoin network as default
+        var AltNet = new bitcore.Networks.add(PotNet);
+        bitcore.Networks.defaultNetwork = AltNet;
 
-    var insight = new explorers.Insight('https://chain.potcoin.com');
+        var insight = new explorers.Insight('https://chain.potcoin.com');
 
-    // Word generation
-    //var code = new Mnemonic(Mnemonic.Words.SPANISH);// Spanish
-    //var code = new Mnemonic();// English
-    //var nemo =code.toString(); // film speed midnight cave come federal horror unusual cute trap congress inherit
-    //console.log(nemo);
+        // Word generation
+        //var code = new Mnemonic(Mnemonic.Words.SPANISH);// Spanish
+        //var code = new Mnemonic();// English
+        //var nemo =code.toString(); // film speed midnight cave come federal horror unusual cute trap congress inherit
+        //console.log(nemo);
 
-    // Get private from seed with protection
-    var code = new Mnemonic('film speed midnight cave come federal horror unusual cute trap congress inherit');
-    var xpriv = code.toHDPrivateKey('superPassword');
-    //console.log(xpriv); // 83eRLJFkhQGDSk2eGZmsqfJuwpEKKDyCMwb99AL3b8VEZzvCRPafNp1CQLm6cfAwMZz4hoFUV744ZvbE5JNgmZDVMXRtQgMALJPiM8evLSnNTdC5
+        // Get private from seed with protection
+        var code = new Mnemonic('film speed midnight cave come federal horror unusual cute trap congress inherit');
+        var xpriv = code.toHDPrivateKey('superPassword');
+        //console.log(xpriv); // 83eRLJFkhQGDSk2eGZmsqfJuwpEKKDyCMwb99AL3b8VEZzvCRPafNp1CQLm6cfAwMZz4hoFUV744ZvbE5JNgmZDVMXRtQgMALJPiM8evLSnNTdC5
 
-    // Validate seed
-    if (Mnemonic.isValid('film speed midnight cave come federal horror unusual cute trap congress inherit')) {
-        console.log('Seed is valid');
-    }
+        // Validate seed
+        if (Mnemonic.isValid('film speed midnight cave come federal horror unusual cute trap congress inherit')) {
+            console.log('Seed is valid');
+        }
 
 
-    // Traditional single address generation
-    /*
-    var privateKey = new bitcore.PrivateKey();
-    console.log('private : ' + privateKey);
-    var address = privateKey.toAddress();
-    console.log('address : ' + address);
+        // Traditional single address generation
+        /*
+        var privateKey = new bitcore.PrivateKey();
+        console.log('private : ' + privateKey);
+        var address = privateKey.toAddress();
+        console.log('address : ' + address);
 
-    var address = 'PKUMXPp5A751ZhhiNTT2ujcxqq5f2mE15z';
-    var PrivateKey = '3b2dccf603658fea1e429767d8f5740f9c188282dc723c3c02c11e4512a363e2';
+        var address = 'PKUMXPp5A751ZhhiNTT2ujcxqq5f2mE15z';
+        var PrivateKey = '3b2dccf603658fea1e429767d8f5740f9c188282dc723c3c02c11e4512a363e2';
 
-    // Make a PrivateKey exportable
-    var toWIF = new bitcore.PrivateKey('3b2dccf603658fea1e429767d8f5740f9c188282dc723c3c02c11e4512a363e2').toWIF();
-    console.log('WIF: ' + toWIF);
+        // Make a PrivateKey exportable
+        var toWIF = new bitcore.PrivateKey('3b2dccf603658fea1e429767d8f5740f9c188282dc723c3c02c11e4512a363e2').toWIF();
+        console.log('WIF: ' + toWIF);
 
-    */
+        */
+
+        /**
+         * HD wallets generation
+         */
+
+        var hdPrivateKey = new bitcore.HDPrivateKey(xpriv);
+        //console.log(hdPrivateKey);
+        //var hdPublicKey = hdPrivateKey.hdPublicKey;
+        //console.log(hdPublicKey); // kind of useless, since won't be used for derivation
+
+        // Address from m/44" 81 for potcoin https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings
+        //var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true); // money here! PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2
+        //var derived = hdPrivateKey.derive("m/44'/0'/0'").derive(0); // Confirmed perfect with https://iancoleman.github.io/bip39/ but fail to receive money
+        var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1); // testing no hardened. PFdzfENGEYdfXn6S8AZvRSijKpHixautkq
+        var PrivateKey = derived.privateKey.toWIF();
+        var publicKey = new bitcore.Address(derived.publicKey);
+
+        console.log(derived.publicKey.toString()); // PublicKey
+        var address = publicKey.toString();
+        console.log(address); // Address
+        console.log(PrivateKey); // PrivateKey
 
     /**
-     * HD wallets generation
+     * Validations
      */
-
-    var hdPrivateKey = new bitcore.HDPrivateKey(xpriv);
-    //console.log(hdPrivateKey);
-    //var hdPublicKey = hdPrivateKey.hdPublicKey;
-    //console.log(hdPublicKey); // kind of useless, since won't be used for derivation
-
-    // Address from m/44" 81 for potcoin https://github.com/libbitcoin/libbitcoin/wiki/Altcoin-Version-Mappings
-    //var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1, true); // money here! PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2
-    //var derived = hdPrivateKey.derive("m/44'/0'/0'").derive(0); // Confirmed perfect with https://iancoleman.github.io/bip39/ but fail to receive money
-    var derived = hdPrivateKey.derive("m/44'/81'/0'/0").derive(1); // testing no hardened. PFdzfENGEYdfXn6S8AZvRSijKpHixautkq
-    var PrivateKey = derived.privateKey.toWIF();
-    var publicKey = new bitcore.Address(derived.publicKey);
-
-    console.log(derived.publicKey.toString()); // PublicKey
-    var address = publicKey.toString();
-    console.log(address); // Address
-    console.log(PrivateKey); // PrivateKey
-
-/**
- * Validations
- */
-/*
-    if (bitcore.PrivateKey.isValid(PrivateKey)){
-        console.log('PrivateKey is valid');
-    }
-
-    if (bitcore.PublicKey.isValid(derived.publicKey.toString())){
-        console.log('PublicKey is valid');
-    }
-
-    // Validate address
-    if (bitcore.Address.isValid(publicKey.toString())) {
-        console.log('Address is valid');
-    }
-*/
-
-
-    /*var = xxx = bitcore.Unit.fromMilis(81.99).toSatoshis() // correct
-    console.info(xxx);*/
-
-    // Convenient way to get utxos
-    insight.getUnspentUtxos(address, function(err, utxos) {
-        if (err) {
-            console.error(err);
-            return false;
-        } else {
-            // Prepare transaction and send
-            var transaction = new bitcore.Transaction()
-                .from(utxos)
-                //.to('PFgp8JfpqxkCk9GtmSZWr8FodG8oYiwE1J', 001000000) // POLONIEX
-                .to('PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE', 50000) // potwallet
-                //.fee(100000)
-                .change(address)
-                //.sign(derived.privateKey);
-                .sign(PrivateKey);
-
-            console.log(transaction);
-            console.log("Verify = " + transaction.verify());
-            console.log("Signature = " + transaction.isFullySigned());
-
-            var txSerialized = transaction.serialize();
-            console.log(txSerialized);
-
-            //throw new Error("STOP");
-            insight.broadcast(txSerialized, function(err, txId) {
-                if (err) {
-                    //console.error(err);
-                    //console.log(JSON.stringify(err));
-                } else {
-                    console.log('Successfully sent: '+txId);
-                }
-            });
+    /*
+        if (bitcore.PrivateKey.isValid(PrivateKey)){
+            console.log('PrivateKey is valid');
         }
-    });
+
+        if (bitcore.PublicKey.isValid(derived.publicKey.toString())){
+            console.log('PublicKey is valid');
+        }
+
+        // Validate address
+        if (bitcore.Address.isValid(publicKey.toString())) {
+            console.log('Address is valid');
+        }
+    */
 
 
-    $(function() {
-        $('#qrcode').qrcode(address);
-        $('#addr').text(address);
-    });
+        /*var = xxx = bitcore.Unit.fromMilis(81.99).toSatoshis() // correct
+        console.info(xxx);*/
 
-    </script>
-</body>
+        // Convenient way to get utxos
+        insight.getUnspentUtxos(address, function(err, utxos) {
+            if (err) {
+                console.error(err);
+                return false;
+            } else {
+                // Prepare transaction and send
+                var transaction = new bitcore.Transaction()
+                    .from(utxos)
+                    //.to('PFgp8JfpqxkCk9GtmSZWr8FodG8oYiwE1J', 001000000) // POLONIEX
+                    .to('PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE', 50000) // potwallet
+                    //.fee(100000)
+                    .change(address)
+                    //.sign(derived.privateKey);
+                    .sign(PrivateKey);
+
+                console.log(transaction);
+                console.log("Verify = " + transaction.verify());
+                console.log("Signature = " + transaction.isFullySigned());
+
+                var txSerialized = transaction.serialize();
+                console.log(txSerialized);
+
+                //throw new Error("STOP");
+                insight.broadcast(txSerialized, function(err, txId) {
+                    if (err) {
+                        //console.error(err);
+                        //console.log(JSON.stringify(err));
+                    } else {
+                        console.log('Successfully sent: '+txId);
+                    }
+                });
+            }
+        });
+
+
+        $(function() {
+            $('#qrcode').qrcode(address);
+            $('#addr').text(address);
+        });
+
+        </script>
+    </body>
 </html>
