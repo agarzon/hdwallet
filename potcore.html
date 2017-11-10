@@ -47,11 +47,15 @@
     //console.log('BIP32 Extended Private Key: ' + hkey.derive("m/44'/81'/0'/0").extendedPrivateKeyString());
     //console.log('BIP32 Extended Public Key (addresses only): ' + hkey.derive("m/44'/81'/0'/0").extendedPublicKeyString());
 
-    console.log('0 address: ' + Address.fromPubKey(hkey.derive("m/44'/81'/0'/0/0").eckey.public).toString());
-    console.log('0 public: ' + bitcore.buffertools.toHex(hkey.derive("m/44'/81'/0'/0/0").eckey.public));
-    console.log('0 private: ' + bitcore.buffertools.toHex(hkey.derive("m/44'/81'/0'/0/0").eckey.private));
+    console.log('1 address: ' + Address.fromPubKey(hkey.derive("m/44'/81'/0'/0/1").eckey.public).toString());
+    console.log('1 public: ' + bitcore.buffertools.toHex(hkey.derive("m/44'/81'/0'/0/1").eckey.public));
+    console.log('1 private: ' + bitcore.buffertools.toHex(hkey.derive("m/44'/81'/0'/0/1").eckey.private));
 
-    var priv = '7ab172cc2ef7042db17632bd67476605809c5459a4071756f98303b4e9cd229a';
+    console.log(hkey.derive("m/44'/81'/0'/0/1").eckey.private);
+    console.log(hkey.derive("m/44'/81'/0'/0/1").eckey);
+    console.log(hkey.derive("m/44'/81'/0'/0/1"));
+
+    var priv = '47acffb3ed33b7a053ee536e12a5664661f75da80f6cf4e7ad32cf7dbfe89f72';
     var wk = new WalletKey();
 
     wk.fromObj({ priv: priv });
@@ -66,14 +70,39 @@
 
 
     // Unspent transactions can be found via the insight.bitcore.io or blockchain.info APIs
-    var unspent = [{ "address": "PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2", "txid": "5f0c7e7a2106c863d4e38ba93e87a4c09a18394686e0663a0afcf028a3b7857f", "vout": 1, "ts": 1509290549, "scriptPubKey": "21022a64689f4d6d07d10fc6a95e263f5096980c18f0a2c87d5e7a5702ad3119fd8fac", "amount": 4.99246411, "confirmations": 6, "confirmationsFromCache": true }]
+    var unspent = [{"address":"PFdzfENGEYdfXn6S8AZvRSijKpHixautkq","txid":"6adad616d0c36488ec3dbbe3e601c60d4ac5d5e29123e43da1ce0d83f3b4839a","vout":0,"ts":1510174436,"scriptPubKey":"76a9144d515dfc23e9a97de075309be0011ef7e44230d388ac","amount":0.087,"confirmations":6,"confirmationsFromCache":true}]
 
 
+            // define transaction output
+            var outs = [{
+                address: 'PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE',
+                amount: 0.01
+            }];
+            // set change address
+            var opts = {
+                remainderOut: {
+                    address: 'PFdzfENGEYdfXn6S8AZvRSijKpHixautkq'
+                }
+            };
+            var tx = new TransactionBuilder(opts)
+                .setUnspent(unspent)
+                .setOutputs(outs)
+                .sign(['UzzW73untSsBtAhwgXTVUYK5Mx5RxpdXZrNSJjszFoj9HEdGdDZ5'])
+                .build();
 
+            var txid = tx.getHash().toString('hex');
+            console.log('Created transaction with txid ' + txid);
+            var raw_tx = tx.serialize().toString('hex');
+            console.log('Transaction raw hex dump:');
+            console.log('-------------------------------------');
+            console.log(raw_tx);
+            console.log('-------------------------------------');
+
+throw new Error("STOP");
 
 
       var peerman = new PeerManager();
-      peerman.addPeer(new Peer('104.25.245.27', 4200));
+      peerman.addPeer(new Peer('chain.potcoin.com', 4200));
 
       peerman.on('connect', function() {
         //var conn = peerman.getActiveConnection();
@@ -81,19 +110,19 @@
         if (conn) {
             // define transaction output
             var outs = [{
-                address: 'PFgp8JfpqxkCk9GtmSZWr8FodG8oYiwE1J',
+                address: 'PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE',
                 amount: 0.01
             }];
             // set change address
             var opts = {
                 remainderOut: {
-                    address: 'PLtNzhajqDN6XLdhQa3vrJyXBGvXjjgbF2'
+                    address: 'PFdzfENGEYdfXn6S8AZvRSijKpHixautkq'
                 }
             };
             var tx = new TransactionBuilder(opts)
                 .setUnspent(unspent)
                 .setOutputs(outs)
-                .sign(['UD4f4bFYRaC5SCF6Wy7xZH4B5YYqmrVKue1sTLTSsz7LEXG2uksL'])
+                .sign(['UzzW73untSsBtAhwgXTVUYK5Mx5RxpdXZrNSJjszFoj9HEdGdDZ5'])
                 .build();
 
             var txid = tx.getHash().toString('hex');
