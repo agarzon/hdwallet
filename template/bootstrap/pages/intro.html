@@ -26,10 +26,15 @@
         <nav class="navbar navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <div class="logo">
+                    <div class="logo pull-left">
                         <a href="/" class="simple-text">
                             <img src="../assets/img/logo.png" alt="PotCoin Wallet">
                         </a>
+                    </div>
+                    <div class="pull-right intro-cta">
+                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModalLogin">
+                            Login
+                        </button>
                     </div>
                 </div>
             </div>
@@ -37,8 +42,8 @@
 
         <div class="intro-submenu">
             <div class="container">
-                <h3>That was simple. Your Account has been created</h3>
-                <p>Already have an account?  Login to an existing Monero account</p>
+                <h3>Creating a wallet has never been more simple</h3>
+                <p>Already have an account?  <a href="#" data-toggle="modal" data-target="#myModalLogin">Login to an existing PotCoin HD WALLET account</a></p>
             </div>
         </div>
 
@@ -46,9 +51,10 @@
 
             <div class="card">
                 <div class="card-header" data-background-color="green">
-                    <h4 class="title">Understand the Risks in Using MyMonero</h4>
+                    <h4 class="title">Understand the Risks in Using a PotCoin HD Wallet</h4>
                 </div>
                 <div class="card-content">
+                    <i class="material-icons warning">warning</i>
                     <p>MyMonero is a web-based interface that allows you to use Monero without running a full Monero node. However, because this convenience comes at a cost: it is extremely difficult for MyMonero to securely deliver its code to your browser. This means that there is considerable risk in using MyMonero for large amounts!</p>
                     <p>It is recommended that you treat MyMonero as you would treat your actual wallet, and not store very large amounts in it. For long-term storage of Monero you should create a cold wallet using MoneroAddress or similar. </p>
                 </div>
@@ -56,37 +62,86 @@
 
             <div class="card">
                 <div class="card-header" data-background-color="green">
-                    <h4 class="title">Your Private Login Key</h4>
+                    <h4 class="title"><strong>Step 1:</strong> Your Private Login Key</h4>
                 </div>
                 <div class="card-content">
-                    <div class="well">
-                        <h1>pioneer lively calamity western fawns wade nanny zesty knowledge incur unjustly insult knowledge</h1>
+                    <div class="cta">
+                        <button type="button" class="btn btn-primary btn-block">
+                            Generate My 12 words
+                        </button>
                     </div>
-                    <br>
-                    <h2>Extra Password</h2>
-                    <div intro="password">
-                        <input type="text" class="form-control" placeholder="Create yor password">
+                    <div id="seed">
+                        <div class="well">
+                            <h1>pioneer lively calamity western fawns wade nanny zesty knowledge incur unjustly insult knowledge</h1>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header" data-background-color="green">
-                    <h4 class="title">Confirm your Private Login Key</h4>
+                    <h4 class="title"><strong>Step 2:</strong> Confirm your Private Login Key</h4>
                 </div>
                 <div class="card-content">
-                    <h2>Extra Password</h2>
-                    <input type="text" class="form-control" placeholder="12 words">
-                    <input type="text" class="form-control" placeholder="Password">
-                    <div style="width:250px" class="pull-right">
-                        <button type="button" class="btn btn-block col-sm-6">
-                            Enter
+                    <div class="alert alert-warning" role="alert">
+                        <p>Be sure to write down <strong>your 12 words</strong> and password (optional), and keep in a safe place.</p>
+                        <p>It is the only way to recover your wallet.</p>
+                    </div>
+                    <div class="intro-inputs">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
+                          <input type="text" class="form-control" placeholder="12 words">
+                        </div>
+                    </div>
+                    <div class="intro-inputs">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="material-icons">lock</i></span>
+                          <input type="text" class="form-control" placeholder="Extra Password (Optional)">
+                        </div>
+                    </div>
+                    <div class="cta">
+                        <button type="button" class="btn btn-primary btn-block">
+                            I've written down my Private Login Key
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Modal Login -->
+        <div class="modal fade" id="myModalLogin">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><strong>Login to an existing account</strong></h4>
+                        <p>Don’t yet have an account? <a href="">Create a PotCoin HD WALLET account</a></p>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <p>Your Private Login Key</p>
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
+                              <input type="text" class="form-control" placeholder="Enter your Private Key here">
+                            </div>
+                        </div>
+                        <br>
+                        <div>
+                            <p>Your Password (If Created)</p>
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="material-icons">lock</i></span>
+                              <input type="text" class="form-control" placeholder="Enter your Password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cta">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary btn-default" data-dismiss="modal">Enter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <!--   Core JS Files   -->
