@@ -24,6 +24,8 @@ var Wallet = (function() {
         port: 4200
     };
 
+    var insight = new explorers.Insight(blockchainUrl);
+
     function generateNemo() {
         var code = new mnemonic(); // English words
         var nemo = code.toString();
@@ -33,7 +35,7 @@ var Wallet = (function() {
 
     function generateHD(nemo, pass) {
         if (validatesNemo(nemo) === false) {
-            throw new Error("Seed code is invalid");
+            throw new Error("Seed code is not valid.");
         }
 
         var code = new mnemonic(nemo);
@@ -56,6 +58,56 @@ var Wallet = (function() {
         return addresses;
     }
 
+    function prepareTX(address, desination, amount, privatekey) {
+        if (validatesAddress(address) === false) {
+            throw new Error("Source address is not valid.");
+        }
+        if (validatesAddress(desination) === false) {
+            throw new Error("Destination address is not valid.");
+        }
+        // validate amount as bigint and set
+        //
+        if (validatesPriv(privatekey) === false) {
+            throw new Error("PrivateKey is not valid.");
+        }
+
+        insight.getUnspentUtxos(address, function(err, utxos) {
+            if (err) {
+                throw new Error(err);
+            }
+
+            // validate amount is available in balance
+            // validate fee is acceptable.
+            console.log(utxos);
+            var transaction = new bitcore.Transaction()
+                .from(utxos)
+                .to(desination, amount)
+                .fee(300000)
+                .lockUntilDate(new Date()) // Set timestamp into tx
+                .change(address)
+                .sign(privatekey);
+
+            console.log(transaction);
+            console.log("Verify = " + transaction.verify());
+            console.log("Signature = " + transaction.isFullySigned());
+
+            var txSerialized = transaction.serialize();
+            console.log(txSerialized);
+
+            //throw new Error("STOP");
+            insight.broadcast(txSerialized, function(err, txId) {
+                if (err) {
+                    console.error(err);
+                    //console.log(JSON.stringify(err));
+                } else {
+                    console.log('Successfully sent: '+txId);
+                }
+            });
+
+            //return txSerialized;
+        });
+    }
+
     /**
      * Validations
      */
@@ -64,7 +116,7 @@ var Wallet = (function() {
             return mnemonic.isValid(nemo);
         }
 
-        throw new Error("Where is the seed to validate?");
+        throw new Error("Where is the seed?");
     }
 
     function validatesPriv(privKey) {
@@ -72,7 +124,7 @@ var Wallet = (function() {
             return bitcore.PrivateKey.isValid(privKey);
         }
 
-        throw new Error("No private key provided");
+        throw new Error("No private key provided.");
     }
 
     function validatesPub(pubKey) {
@@ -80,7 +132,7 @@ var Wallet = (function() {
             return bitcore.PublicKey.isValid(pubKey);
         }
 
-        throw new Error("No public key provided");
+        throw new Error("No public key provided.");
     }
 
     function validatesAddress(address) {
@@ -88,7 +140,7 @@ var Wallet = (function() {
             return bitcore.Address.isValid(address);
         }
 
-        throw new Error("No address provided");
+        throw new Error("No address provided.");
     }
 
     // main init method
@@ -103,9 +155,10 @@ var Wallet = (function() {
         generateNemo: generateNemo,
         validatesNemo: validatesNemo, // Useful only with generateHD
         validatesPriv: validatesPriv, // Useful only to import
-        validatesPub: validatesPub, // Kind of useless
+        //validatesPub: validatesPub, // Kind of useless
         validatesAddress: validatesAddress,
         generateHD: generateHD,
+        prepareTX: prepareTX,
         addresses: addresses,
     };
 }());

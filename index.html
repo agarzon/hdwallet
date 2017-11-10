@@ -25,8 +25,9 @@
             Wallet.generateNemo();
             console.log(Wallet.validatesNemo('endless crew silver collect endorse snow 654 donkey strategy pudding seed fresh'));
             console.log(Wallet.validatesPriv('L24NgBc8oVXUCapZCeJmdorwWeLtgZutRsoRy2MoBSW73nNQntZF'));
-            console.log(Wallet.validatesPub('026178f24e9465cb0740c52392153ab7c941fe1650eab1d3d14f4ed4d03fbfdc8b'));
             console.log(Wallet.generateHD("attitude dentist wreck plate solid mother appear disagree funny vacuum hazard void"));
+            var rawtx = Wallet.prepareTX("PFdzfENGEYdfXn6S8AZvRSijKpHixautkq", "PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE", 100000, 'U7Wig5kPqXNN34dLN568hVk9sLsWxK1AbCdex1oRJwCsbFVxUM6K');
+            console.log(rawtx);
 
 
             $('#qrcode').qrcode('fake');
