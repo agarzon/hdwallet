@@ -13,7 +13,7 @@
     <script src="bower_components/vue/dist/vue.min.js"></script>
     <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="js/potcore/browser/bundle-a.js"></script>
+    <script src="js/potcore/bundle.js"></script>
     <script>
     var bitcore = require('bitcore');
     var BIP39 = bitcore.BIP39;
@@ -54,7 +54,7 @@
     console.log(hkey.derive("m/44'/81'/0'/0/1").eckey.private);
     console.log(hkey.derive("m/44'/81'/0'/0/1").eckey);
     console.log(hkey.derive("m/44'/81'/0'/0/1"));
-
+/*
     var priv = '47acffb3ed33b7a053ee536e12a5664661f75da80f6cf4e7ad32cf7dbfe89f72';
     var wk = new WalletKey();
 
@@ -64,41 +64,39 @@
 
 
 
+*/
 
 
 
 
-
-    // Unspent transactions can be found via the insight.bitcore.io or blockchain.info APIs
-    var unspent = [{"address":"PFdzfENGEYdfXn6S8AZvRSijKpHixautkq","txid":"6adad616d0c36488ec3dbbe3e601c60d4ac5d5e29123e43da1ce0d83f3b4839a","vout":0,"ts":1510174436,"scriptPubKey":"76a9144d515dfc23e9a97de075309be0011ef7e44230d388ac","amount":0.087,"confirmations":6,"confirmationsFromCache":true}]
+    var unspent = [{"address":"PFdzfENGEYdfXn6S8AZvRSijKpHixautkq","txid":"dfacccb50563f9025e59aa2638f0510d156b13a72e79470b13aed7af602c109c","vout":1,"ts":1510335058,"scriptPubKey":"76a9144d515dfc23e9a97de075309be0011ef7e44230d388ac","amount":0.076,"confirmations":6,"confirmationsFromCache":true}]
 
 
-            // define transaction output
-            var outs = [{
-                address: 'PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE',
-                amount: 0.01
-            }];
-            // set change address
-            var opts = {
-                remainderOut: {
-                    address: 'PFdzfENGEYdfXn6S8AZvRSijKpHixautkq'
-                }
-            };
-            var tx = new TransactionBuilder(opts)
-                .setUnspent(unspent)
-                .setOutputs(outs)
-                .sign(['UzzW73untSsBtAhwgXTVUYK5Mx5RxpdXZrNSJjszFoj9HEdGdDZ5'])
-                .build();
+    // define transaction output
+    var outs = [{
+        address: 'PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE',
+        amount: 0.01
+    }];
+    // set change address
+    var opts = {
+        remainderOut: {
+            address: 'PFdzfENGEYdfXn6S8AZvRSijKpHixautkq'
+        }
+    };
+    var tx = new TransactionBuilder(opts)
+        .setUnspent(unspent)
+        .setOutputs(outs)
+        .sign(['UzzW73untSsBtAhwgXTVUYK5Mx5RxpdXZrNSJjszFoj9HEdGdDZ5'])
+        //.sign(['U7Wig5kPqXNN34dLN568hVk9sLsWxK1AbCdex1oRJwCsbFVxUM6K'])
+        .build();
 
-            var txid = tx.getHash().toString('hex');
-            console.log('Created transaction with txid ' + txid);
-            var raw_tx = tx.serialize().toString('hex');
-            console.log('Transaction raw hex dump:');
-            console.log('-------------------------------------');
-            console.log(raw_tx);
-            console.log('-------------------------------------');
+    var txid = tx.getHash().toString('hex');
+    console.log('Created transaction with txid ' + txid);
+    var raw_tx = tx.serialize().toString('hex');
+    console.log('Transaction raw hex dump:');
+    console.log(raw_tx);
 
-throw new Error("STOP");
+    throw new Error("STOP");
 
 
       var peerman = new PeerManager();

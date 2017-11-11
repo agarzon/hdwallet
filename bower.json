@@ -19,6 +19,10 @@
     "bitcore-mnemonic": "^1.2.5",
     "bitcore-lib": "^0.14.0",
     "jquery-qrcode": "*",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "components-font-awesome": "^4.7.0",
+    "datatables.net": "^1.10.16",
+    "datatables.net-bs": "^2.1.1",
+    "select2": "^4.0.5"
   }
 }
