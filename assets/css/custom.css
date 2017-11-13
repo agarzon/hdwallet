@@ -1,3 +1,9 @@
+#walletApp {
+    display: none;
+}
+#intro {
+    display: block;
+}
 @font-face {
   font-family: 'potcoin';
   src:  url('../fonts/potcoin.eot?5tnnvb');
@@ -234,8 +240,18 @@ padding-left: 0;
     font-size: 18px;
 }
 .btn.btn-xs, .btn-group-xs .btn, .sidebarv .navbar .navbar-nav>li>a.btn.btn-xs, .btn-group-xs .sidebar .navbar .navbar-nav>li>a.btn {
-    padding: 4px 5px;
+    padding: 4px 10px;
     font-size: 10px;
+    text-align: center;
+}
+.btn.btn-primary.btn-simple {
+    background-color: transparent;
+    color: #a5d370;
+    box-shadow: none;
+}
+.btn.btn-primary.btn-simple:hover, .btn.btn-primary.btn-simple:focus, .btn.btn-primary.btn-simple:active, .navbar .navbar-nav>li>a.btn.btn-primary.btn-simple:hover, .navbar .navbar-nav>li>a.btn.btn-primary.btn-simple:focus, .navbar .navbar-nav>li>a.btn.btn-primary.btn-simple:active {
+    background-color: transparent;
+    color: #256638;
 }
 p.copyright {
     text-align: left;
@@ -316,7 +332,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 }
 
 /** Intro Page **/
-body.intro-page {
+body .intro-page {
     background: #eee;
     line-height:30px;
 }
