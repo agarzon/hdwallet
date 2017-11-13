@@ -1,8 +1,5 @@
-#walletApp {
-    display: none;
-}
-#intro {
-    display: block;
+[v-cloak] {
+  display: none;
 }
 @font-face {
   font-family: 'potcoin';

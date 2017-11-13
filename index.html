@@ -25,436 +25,436 @@
 </head>
 
 <body>
-    <!-- INTRO -->
-    <div class="intro-page" id="intro">
-        <div class="wrapper">
+    <div id="app" v-cloak>
+        <!-- INTRO -->
+        <div class="intro-page" id="walletIntro" v-if="!logged">
+            <div class="wrapper">
 
-            <nav class="navbar navbar-fixed-top">
-                <div class="container">
-                    <div class="navbar-header">
-                        <div class="logo pull-left">
-                            <a href="/" class="simple-text">
-                                <img src="assets/img/logo.png" alt="Potcoin Wallet">
-                            </a>
-                        </div>
-                        <div class="pull-right intro-cta">
-                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModalLogin">
-                                Login
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            <div class="intro-submenu">
-                <div class="container">
-                    <h3>Creating a wallet has never been more simple</h3>
-                    <p>Already have an account?  <a href="#" data-toggle="modal" data-target="#myModalLogin">Login to an existing Potcoin HD WALLET account</a></p>
-                </div>
-            </div>
-
-            <div class="container wrapper">
-
-                <div class="card">
-                    <div class="card-header" data-background-color="green">
-                        <h4 class="title">Understand the Risks in Using a Potcoin HD Wallet</h4>
-                    </div>
-                    <div class="card-content">
-                        <i class="material-icons warning">warning</i>
-                        <p>This is a web-based interface that allows you to use Potcoin without running a full Potcoin node. However, because this convenience comes at a cost: it is extremely difficult for this system to securely deliver its code to your browser. This means that there is considerable risk in using this tool for large amounts!</p>
-                        <p>It is recommended that you treat this web as you would treat your actual wallet, and not store very large amounts in it. For long-term storage of Potcoin you should use a cold wallet storage.</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" data-background-color="green">
-                        <h4 class="title"><strong>Step 1:</strong>Get your random seed</h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="cta">
-                            <button type="button" class="btn btn-primary btn-block" v-on:click="generate()">
-                                Generate My 12 words
-                            </button>
-                        </div>
-                        <div class="well">
-                            <h1>{{ mnemo }}</h1>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header" data-background-color="green">
-                        <h4 class="title"><strong>Step 2:</strong> Confirm your seed</h4>
-                    </div>
-                    <div class="card-content">
-                        <form v-on:submit.prevent="onSubmit" autocomplete="off">
-                            <div class="alert alert-warning" role="alert">
-                                <p>Be sure to write down <strong>your 12 words</strong> and password (optional), and keep in a safe place.</p>
-                                <p>It is the only way to recover your wallet.</p>
+                <nav class="navbar navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <div class="logo pull-left">
+                                <a href="/" class="simple-text">
+                                    <img src="assets/img/logo.png" alt="Potcoin Wallet">
+                                </a>
                             </div>
-                            <div class="intro-inputs">
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
-                                  <input type="text" class="form-control" placeholder="12 words" name="mnemo" required v-model="mnemo">
-                                </div>
-                            </div>
-                            <div class="intro-inputs">
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="material-icons">lock</i></span>
-                                  <input type="text" class="form-control" placeholder="Extra Password (Optional)" name="password" v-model="password">
-                                </div>
-                            </div>
-                            <div class="cta">
-                                <button type="button" class="btn btn-primary btn-block" v-on:click.stop="login">
-                                    I've written down my seed
+                            <div class="pull-right intro-cta">
+                                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModalLogin">
+                                    Login
                                 </button>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="intro-submenu">
+                    <div class="container">
+                        <h3>Creating a wallet has never been more simple</h3>
+                        <p>Already have an account? <a href="#" data-toggle="modal" data-target="#myModalLogin">Login to an existing Potcoin HD WALLET account</a></p>
+                    </div>
+                </div>
+
+                <div class="container wrapper">
+
+                    <div class="card">
+                        <div class="card-header" data-background-color="green">
+                            <h4 class="title">Understand the Risks in Using a Potcoin HD Wallet</h4>
+                        </div>
+                        <div class="card-content">
+                            <i class="material-icons warning">warning</i>
+                            <p>This is a web-based interface that allows you to use Potcoin without running a full Potcoin node. However, because this convenience comes at a cost: it is extremely difficult for this system to securely deliver its code to your browser. This means that there is considerable risk in using this tool for large amounts!</p>
+                            <p>It is recommended that you treat this web as you would treat your actual wallet, and not store very large amounts in it. For long-term storage of Potcoin you should use a cold wallet storage.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" data-background-color="green">
+                            <h4 class="title"><strong>Step 1:</strong> Get your random seed</h4>
+                        </div>
+                        <div class="card-content">
+                            <div class="cta">
+                                <button type="button" class="btn btn-primary btn-block" v-on:click="generate()">
+                                    Generate My 12 words
+                                </button>
+                            </div>
+                            <div class="well">
+                                <h1>{{ mnemo }}</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" data-background-color="green">
+                            <h4 class="title"><strong>Step 2:</strong> Confirm your seed</h4>
+                        </div>
+                        <div class="card-content">
+                            <form v-on:submit.prevent="onSubmit" autocomplete="off">
+                                <div class="alert alert-warning" role="alert">
+                                    <p>Be sure to write down <strong>your 12 words</strong> and password (optional), and keep in a safe place.</p>
+                                    <p>It is the only way to recover your wallet.</p>
+                                </div>
+                                <div class="intro-inputs">
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
+                                      <input type="text" class="form-control" placeholder="12 words" name="seed" required v-model="seed">
+                                    </div>
+                                </div>
+                                <div class="intro-inputs">
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="material-icons">lock</i></span>
+                                      <input type="text" class="form-control" placeholder="Extra Password (Optional)" name="password" v-model="password">
+                                    </div>
+                                </div>
+                                <div class="cta">
+                                    <button type="button" class="btn btn-primary btn-block" v-on:click="login">
+                                        I've written down my seed
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Login -->
+                <div class="modal fade" id="myModalLogin">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form v-on:submit.prevent="onSubmit" autocomplete="off">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title"><strong>Login to an existing account</strong></h4>
+                                    <p>Don’t yet have an account? <a href="">Create a Potcoin HD WALLET account</a></p>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <p>Your Seed</p>
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
+                                          <input type="text" class="form-control" placeholder="Enter your seed" name="seed" required v-model="seed">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <p>Your Password (If Created)</p>
+                                        <div class="input-group">
+                                          <span class="input-group-addon"><i class="material-icons">lock</i></span>
+                                          <input type="text" class="form-control" placeholder="Enter your password" name="password" v-model="password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cta">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary btn-default" data-dismiss="modal" v-on:click="login">
+                                            Enter
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WALLET -->
+        <div class="wrapper" id="walletApp" v-else>
+
+            <div class="sidebar">
+                <div class="logo">
+                    <a href="/" class="simple-text">
+                        <img src="assets/img/logo.png" alt="PotCoin Wallet">
+                    </a>
+                </div>
+                <div class="sidebar-wrapper">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#balance">Wallet Balance</a></li>
+                        <li><a href="#addresses">Send / Receive</a></li>
+                        <li><a href="#wallet-info">Wallet Info</a></li>
+                    </ul>
+                    <br>
+                    <div class="clear col-sm-12 potcoin-info">
+                        <div class="well">
+                            <h2>PotCoin Info</h2>
+                            <ul>
+                                <li>Price BTC: <strong>{{ potcoin.price_btc }}</strong></li>
+                                <li>Price USD: <strong>{{ potcoin.price_usd }}</strong></li>
+                                <li>Price CDN: <strong>$0.2083</strong></li>
+                                <li>24h change: <strong>{{ potcoin.percent_change_24h }} %</strong></li>
+                                <li>Status: <strong>Connected</strong><br><small>Last Sync: 1 min 20 sec</small></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="refresh">
+                        <button type="button" class="btn btn-primary btn-block">
+                            Refresh Wallet <i class="material-icons">refresh</i>
+                        </button>
+                        <button type="button" class="btn btn-white btn-block" v-on:click="logout()">
+                            Logout
+                        </button>
+                        <!-- <button onclick="notify.showNotification('top','center')" type="button" rel="tooltip" title="Withdraw" class="btn btn-block">
+                            Alert Example
+                        </button> -->
                     </div>
                 </div>
             </div>
 
-            <!-- Modal Login -->
-            <div class="modal fade" id="myModalLogin">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <form v-on:submit.prevent="onSubmit" autocomplete="off">
+            <div class="main-panel">
+                <nav class="navbar navbar-transparent navbar-absolute">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+                <div class="content">
+                    <div class="container-fluid">
+
+                        <span class="link-target" id="balance">&nbsp;</span>
+                        <div>
+                            <div class="col-lg-3 col-md-6 col-sm-6" id="send-recieve">
+                                <div class="card card-stats">
+                                    <div class="card-header" style="background:#256638;color:#fff;">
+                                        <img src="assets/img/pot.png" alt="canadian currency">
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">Your POT Balance</p>
+                                        <h3 class="title">100 000
+                                            <small>POT</small>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" style="background:#fb8c00;color:#fff;">
+                                        <img src="assets/img/bitcoin.png" alt="canadian currency">
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">POT/BTC</p>
+                                        <h3 class="title">2.5</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" style="background:#c7211d;color:#fff;">
+                                        <img src="assets/img/canada.png" alt="canadian currency">
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">POT/CAD $</p>
+                                        <h3 class="title">$9,200</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="card card-stats">
+                                    <div class="card-header" style="background:#1c3d7b;color:#fff;">
+                                        <img src="assets/img/usa.png" alt="canadian currency">
+                                    </div>
+                                    <div class="card-content">
+                                        <p class="category">POT/USD $</p>
+                                        <h3 class="title">$7,500</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <span class="link-target" id="addresses">&nbsp;</span>
+                            <div class="card">
+                                <div class="card-header" data-background-color="green">
+                                    <h4 class="title">Addresses</h4>
+                                    <p class="category">Choose an address below to send or receive PotCoin</p>
+                                </div>
+                                <div class="address-dropdown-mobile col-sm-12">
+                                    <select id="address" style="width:100%;">
+                                    <!-- Dropdown List Option -->
+                                    </select>
+                                    <div class="well address-mobile-selected">
+                                        <p>Choose send or receive to continue.
+                                            <span class="address-mobile-key">
+                                                <button type="button" class="btn btn-info btn-simple btn-xs">
+                                                    Key <i class="material-icons">vpn_key</i>
+                                                </button>
+                                            </span>
+                                        </p>
+                                        <div class="col-sm-6 no-pad-left">
+                                            <button type="button" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalSend">
+                                                Send <i class="material-icons">send</i>
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-6 no-pad-right">
+                                            <button type="button" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalReceive">
+                                                Receive <i class="material-icons">move_to_inbox</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-content table-responsive">
+                                    <table id="example" class="table table-striped" width="100%" cellspacing="0">
+                                            <thead class="text-primary">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Address</th>
+                                                    <th>Balance</th>
+                                                    <th>Keys</th>
+                                                    <th>Send/Receive</th>
+                                                    <th>Refresh</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Address</th>
+                                                    <th>Balance</th>
+                                                    <th>Keys</th>
+                                                    <th>Send/Receive</th>
+                                                    <th>Refresh</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF</td>
+                                                    <td>2000000</td>
+                                                    <td>
+                                                        <button type="button" rel="tooltip" title="Private Keys" class="btn btn-info btn-simple btn-xs">
+                                                            <i class="material-icons">vpn_key</i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalSend">
+                                                            <i class="material-icons">send</i>
+                                                        </button>
+
+                                                        <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalReceive">
+                                                            <i class="material-icons">move_to_inbox</i>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" rel="tooltip" title="Refresh" class="btn btn-warning btn-simple btn-xs">
+                                                            <i class="material-icons">refresh</i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="link-target" id="wallet-info">&nbsp;</span>
+                        <div class="col-xs-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="green">
+                                    <h4 class="title">Wallet Info</h4>
+                                </div>
+                                <div class="card-content">
+                                    <h2>About </h2>
+                                    <p>Potsight is an open-source Potcoin blockchain explorer with complete REST and websocket APIs that can be used for writing web wallets and other apps that need more advanced blockchain queries than provided by potcoind RPC. Check out the source code.</p>
+                                    <p>Potsight is still in development, so be sure to report any bugs and provide feedback for improvement at our github issue tracker.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Modal Send -->
+                <div class="modal fade" id="myModalSend">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title"><strong>Login to an existing account</strong></h4>
-                                <p>Don’t yet have an account? <a href="">Create a Potcoin HD WALLET account</a></p>
+                                <h4 class="modal-title"><strong>Send PotCoin</strong></h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="well">
+                                    <small>Sent From: <strong>PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF</strong></small><br>
+                                    <small>Balance: <strong>200 000 000</strong></small>
+                                </div>
+
+                                <p>Send To:</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="material-icons">location_on</i>
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="Address">
+                                </div>
+                                <br>
+                                <p>Amount:</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                       <span class="icon-potcoin"></span>
+                                    </span>
+                                    <input type="text" class="form-control" placeholder="0000">
+                                </div>
+                                <br>
+                                <div class="alert alert-warning" role="alert">
+                                    <p>Please verify your <strong>Destination Address</strong>. We cannot refund an incorrect withdrawal.</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Receive -->
+                <div class="modal fade" id="myModalReceive">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title"><strong>Receive PotCoin</strong></h4>
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    <p>Your Seed</p>
+                                    <div id="qrcode"></div>
+                                    <br>
+                                    <p>Address</p>
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
-                                      <input type="text" class="form-control" placeholder="Enter your seed" name="mnemo" required v-model="mnemo">
+                                      <span class="input-group-addon"><i class="material-icons">location_on</i></span>
+                                      <input type="text" class="form-control" value="PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF" readonly>
                                     </div>
                                 </div>
                                 <br>
-                                <div>
-                                    <p>Your Password (If Created)</p>
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="material-icons">lock</i></span>
-                                      <input type="text" class="form-control" placeholder="Enter your password" name="password" v-model="password">
-                                    </div>
+                                <div class="alert alert-warning" role="alert">
+                                    <p>Depositing tokens to this address other than <strong>POT</strong> will result in your funds being lost.</p>
                                 </div>
                             </div>
-                            <div class="cta">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary btn-default" data-dismiss="modal" v-on:click="login">
-                                        Enter
-                                    </button>
-                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white btn-default" data-dismiss="modal">Close</button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <p class="copyright">
+                            &copy;
+                            {{ currentYear }} PotCoin HD Wallet
+                        </p>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
-
-    <!-- WALLET -->
-    <div class="wrapper" id="walletApp">
-
-        <div class="sidebar">
-            <div class="logo">
-                <a href="/" class="simple-text">
-                    <img src="assets/img/logo.png" alt="PotCoin Wallet">
-                </a>
-            </div>
-            <div class="sidebar-wrapper">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#balance">Wallet Balance</a></li>
-                    <li><a href="#addresses">Send / Receive</a></li>
-                    <li><a href="#wallet-info">Wallet Info</a></li>
-                </ul>
-                <br>
-                <div class="clear col-sm-12 potcoin-info">
-                    <div class="well">
-                        <h2>PotCoin Info</h2>
-                        <ul>
-                            <li>Price BTC: <strong>0.00001627</strong></li>
-                            <li>Price USD: <strong>$0.1183</strong></li>
-                            <li>Price CDN: <strong>$0.2083</strong></li>
-                            <li>Status: <strong>Connected</strong><br><small>Last Sync: 1 min 20 sec</small></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="refresh">
-                    <button type="button" class="btn btn-primary btn-block">
-                        Refresh Wallet <i class="material-icons">refresh</i>
-                    </button>
-                    <button type="button" class="btn btn-white btn-block" v-on:click="logout()">
-                        Logout
-                    </button>
-                    <!-- <button onclick="notify.showNotification('top','center')" type="button" rel="tooltip" title="Withdraw" class="btn btn-block">
-                        Alert Example
-                    </button> -->
-                </div>
-            </div>
-        </div>
-
-        <div class="main-panel">
-            <nav class="navbar navbar-transparent navbar-absolute">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-                </div>
-            </nav>
-            <div class="content">
-                <div class="container-fluid">
-
-                    <span class="link-target" id="balance">&nbsp;</span>
-                    <div>
-                        <div class="col-lg-3 col-md-6 col-sm-6" id="send-recieve">
-                            <div class="card card-stats">
-                                <div class="card-header" style="background:#256638;color:#fff;">
-                                    <img src="assets/img/pot.png" alt="canadian currency">
-                                </div>
-                                <div class="card-content">
-                                    <p class="category">Your POT Balance</p>
-                                    <h3 class="title">100 000
-                                        <small>POT</small>
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-header" style="background:#fb8c00;color:#fff;">
-                                    <img src="assets/img/bitcoin.png" alt="canadian currency">
-                                </div>
-                                <div class="card-content">
-                                    <p class="category">POT/BTC</p>
-                                    <h3 class="title">2.5</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-header" style="background:#c7211d;color:#fff;">
-                                    <img src="assets/img/canada.png" alt="canadian currency">
-                                </div>
-                                <div class="card-content">
-                                    <p class="category">POT/CAD $</p>
-                                    <h3 class="title">$9,200</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card card-stats">
-                                <div class="card-header" style="background:#1c3d7b;color:#fff;">
-                                    <img src="assets/img/usa.png" alt="canadian currency">
-                                </div>
-                                <div class="card-content">
-                                    <p class="category">POT/USD $</p>
-                                    <h3 class="title">$7,500</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-12">
-                        <span class="link-target" id="addresses">&nbsp;</span>
-                        <div class="card">
-                            <div class="card-header" data-background-color="green">
-                                <h4 class="title">Addresses</h4>
-                                <p class="category">Choose an address below to send or receive PotCoin</p>
-                            </div>
-                            <div class="address-dropdown-mobile col-sm-12">
-                                <select id="address" style="width:100%;">
-                                <!-- Dropdown List Option -->
-                                </select>
-                                <div class="well address-mobile-selected">
-                                    <p>Choose send or receive to continue.
-                                        <span class="address-mobile-key">
-                                            <button type="button" class="btn btn-info btn-simple btn-xs">
-                                                Key <i class="material-icons">vpn_key</i>
-                                            </button>
-                                        </span>
-                                    </p>
-                                    <div class="col-sm-6 no-pad-left">
-                                        <button type="button" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalSend">
-                                            Send <i class="material-icons">send</i>
-                                        </button>
-                                    </div>
-                                    <div class="col-sm-6 no-pad-right">
-                                        <button type="button" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalReceive">
-                                            Receive <i class="material-icons">move_to_inbox</i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-content table-responsive">
-                                <table id="example" class="table table-striped" width="100%" cellspacing="0">
-                                        <thead class="text-primary">
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Address</th>
-                                                <th>Balance</th>
-                                                <th>Keys</th>
-                                                <th>Send/Receive</th>
-                                                <th>Refresh</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Address</th>
-                                                <th>Balance</th>
-                                                <th>Keys</th>
-                                                <th>Send/Receive</th>
-                                                <th>Refresh</th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF</td>
-                                                <td>2000000</td>
-                                                <td>
-                                                    <button type="button" rel="tooltip" title="Private Keys" class="btn btn-info btn-simple btn-xs">
-                                                        <i class="material-icons">vpn_key</i>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalSend">
-                                                        <i class="material-icons">send</i>
-                                                    </button>
-
-                                                    <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalReceive">
-                                                        <i class="material-icons">move_to_inbox</i>
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" rel="tooltip" title="Refresh" class="btn btn-warning btn-simple btn-xs">
-                                                        <i class="material-icons">refresh</i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <span class="link-target" id="wallet-info">&nbsp;</span>
-                    <div class="col-xs-12">
-                        <div class="card">
-                            <div class="card-header" data-background-color="green">
-                                <h4 class="title">Wallet Info</h4>
-                            </div>
-                            <div class="card-content">
-                                <h2>About </h2>
-                                <p>Potsight is an open-source Potcoin blockchain explorer with complete REST and websocket APIs that can be used for writing web wallets and other apps that need more advanced blockchain queries than provided by potcoind RPC. Check out the source code.</p>
-                                <p>Potsight is still in development, so be sure to report any bugs and provide feedback for improvement at our github issue tracker.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Modal Send -->
-            <div class="modal fade" id="myModalSend">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title"><strong>Send PotCoin</strong></h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="well">
-                                <small>Sent From: <strong>PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF</strong></small><br>
-                                <small>Balance: <strong>200 000 000</strong></small>
-                            </div>
-
-                            <p>Send To:</p>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">location_on</i>
-                                </span>
-                                <input type="text" class="form-control" placeholder="Address">
-                            </div>
-                            <br>
-                            <p>Amount:</p>
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                   <span class="icon-potcoin"></span>
-                                </span>
-                                <input type="text" class="form-control" placeholder="0000">
-                            </div>
-                            <br>
-                            <div class="alert alert-warning" role="alert">
-                                <p>Please verify your <strong>Destination Address</strong>. We cannot refund an incorrect withdrawal.</p>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary">Send</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Receive -->
-            <div class="modal fade" id="myModalReceive">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title"><strong>Receive PotCoin</strong></h4>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                <div id="qrcode"></div>
-                                <br>
-                                <p>Address</p>
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="material-icons">location_on</i></span>
-                                  <input type="text" class="form-control" value="PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF" readonly>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="alert alert-warning" role="alert">
-                                <p>Depositing tokens to this address other than <strong>POT</strong> will result in your funds being lost.</p>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-white btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <footer class="footer">
-                <div class="container-fluid">
-                    <p class="copyright">
-                        &copy;
-                        <script>
-                            document.write(new Date().getFullYear());
-                        </script>
-                        PotCoin HD Wallet
-                    </p>
-                </div>
-            </footer>
-        </div>
-    </div>
-
 </body>
 
 
 <!--   Core JS Files   -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/vue/dist/vue.min.js"></script>
+<script src="bower_components/vue/dist/vue.js"></script>
+<script src="bower_components/axios/dist/axios.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
 <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
@@ -462,6 +462,7 @@
 <script src="assets/js/material.min.js"></script>
 <!-- <script src="assets/js/wallet/nets.js"></script> -->
 <script src="assets/js/wallet/wallet.js"></script>
+<script src="assets/js/app.js"></script>
 
 <!--  Dynamic Elements plugin -->
 <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
@@ -477,58 +478,8 @@
 <script src="assets/js/material-dashboard.js"></script>
 
 <script>
-    new Vue({
-      el: "#walletApp",
-      data: {
-        //mnemo: "film speed midnight cave come federal horror unusual cute trap congress inherit",
-        //password: "superPassword",
-        mnemo: "",
-        password: "",
-      },
-      created: function () {
-        if (typeof(Storage) === "undefined") {
-            alert("Sorry! No Web Storage support for your browser.");
-            window.location.href = "/"; // Go home, do not insist!
-        }
-
-        // check if login is in memory, draw wallet if so
-        if (localStorage.getItem("xpriv")) {
-            // Go wallet
-            console.log("go wallet");
-        } else {
-            this.mnemo= Wallet.generateNemo();
-        }
-      },
-      methods: {
-        generate: function () {
-          this.mnemo= Wallet.generateNemo();
-        },
-        login: function () {
-            try {
-              //validate
-              var xpriv = Wallet.getMasterKey(this.mnemo, this.password);
-              // Storage
-              localStorage.setItem("xpriv", xpriv);
-              localStorage.setItem("time", new Date());
-              // Clear data
-              //this.mnemo = "";
-              //this.password = "";
-
-              //clear form
-              //swap page
-            }
-            catch(err) {
-                alert(err.message);
-            }
-        },
-        logout: function () {
-            localStorage.clear();
-            window.location.href = "/";
-        }
-      }
-    });
     (function() {
-//        Wallet.init();
+        //Wallet.init();
     })();
 </script>
 
