@@ -24,144 +24,144 @@
     <link href="assets/css/custom.css" rel="stylesheet" />
 </head>
 
-<!--
-<body class="intro-page">
-    <div class="wrapper" id="walletApp">
+<body>
+    <!-- INTRO -->
+    <div class="intro-page" id="intro">
+        <div class="wrapper">
 
-        <nav class="navbar navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <div class="logo pull-left">
-                        <a href="/" class="simple-text">
-                            <img src="assets/img/logo.png" alt="Potcoin Wallet">
-                        </a>
-                    </div>
-                    <div class="pull-right intro-cta">
-                        <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModalLogin">
-                            Login
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <div class="intro-submenu">
-            <div class="container">
-                <h3>Creating a wallet has never been more simple</h3>
-                <p>Already have an account?  <a href="#" data-toggle="modal" data-target="#myModalLogin">Login to an existing Potcoin HD WALLET account</a></p>
-            </div>
-        </div>
-
-        <div class="container wrapper">
-
-            <div class="card">
-                <div class="card-header" data-background-color="green">
-                    <h4 class="title">Understand the Risks in Using a Potcoin HD Wallet</h4>
-                </div>
-                <div class="card-content">
-                    <i class="material-icons warning">warning</i>
-                    <p>This is a web-based interface that allows you to use Potcoin without running a full Potcoin node. However, because this convenience comes at a cost: it is extremely difficult for this system to securely deliver its code to your browser. This means that there is considerable risk in using this tool for large amounts!</p>
-                    <p>It is recommended that you treat this web as you would treat your actual wallet, and not store very large amounts in it. For long-term storage of Potcoin you should use a cold wallet storage.</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header" data-background-color="green">
-                    <h4 class="title"><strong>Step 1:</strong>Get your random seed</h4>
-                </div>
-                <div class="card-content">
-                    <div class="cta">
-                        <button type="button" class="btn btn-primary btn-block" v-on:click="generate()">
-                            Generate My 12 words
-                        </button>
-                    </div>
-                    <div class="well">
-                        <h1>{{ mnemo }}</h1>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header" data-background-color="green">
-                    <h4 class="title"><strong>Step 2:</strong> Confirm your seed</h4>
-                </div>
-                <div class="card-content">
-                    <form v-on:submit.prevent="onSubmit" autocomplete="off">
-                        <div class="alert alert-warning" role="alert">
-                            <p>Be sure to write down <strong>your 12 words</strong> and password (optional), and keep in a safe place.</p>
-                            <p>It is the only way to recover your wallet.</p>
+            <nav class="navbar navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <div class="logo pull-left">
+                            <a href="/" class="simple-text">
+                                <img src="assets/img/logo.png" alt="Potcoin Wallet">
+                            </a>
                         </div>
-                        <div class="intro-inputs">
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
-                              <input type="text" class="form-control" placeholder="12 words" name="mnemo" required v-model="mnemo">
-                            </div>
-                        </div>
-                        <div class="intro-inputs">
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="material-icons">lock</i></span>
-                              <input type="text" class="form-control" placeholder="Extra Password (Optional)" name="password" v-model="password">
-                            </div>
-                        </div>
-                        <div class="cta">
-                            <button type="button" class="btn btn-primary btn-block" v-on:click.stop="login">
-                                I've written down my seed
+                        <div class="pull-right intro-cta">
+                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModalLogin">
+                                Login
                             </button>
                         </div>
-                    </form>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="intro-submenu">
+                <div class="container">
+                    <h3>Creating a wallet has never been more simple</h3>
+                    <p>Already have an account?  <a href="#" data-toggle="modal" data-target="#myModalLogin">Login to an existing Potcoin HD WALLET account</a></p>
                 </div>
             </div>
-        </div>
 
-        <!-- Modal Login -->
-        <div class="modal fade" id="myModalLogin">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form v-on:submit.prevent="onSubmit" autocomplete="off">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title"><strong>Login to an existing account</strong></h4>
-                            <p>Don’t yet have an account? <a href="">Create a Potcoin HD WALLET account</a></p>
+            <div class="container wrapper">
+
+                <div class="card">
+                    <div class="card-header" data-background-color="green">
+                        <h4 class="title">Understand the Risks in Using a Potcoin HD Wallet</h4>
+                    </div>
+                    <div class="card-content">
+                        <i class="material-icons warning">warning</i>
+                        <p>This is a web-based interface that allows you to use Potcoin without running a full Potcoin node. However, because this convenience comes at a cost: it is extremely difficult for this system to securely deliver its code to your browser. This means that there is considerable risk in using this tool for large amounts!</p>
+                        <p>It is recommended that you treat this web as you would treat your actual wallet, and not store very large amounts in it. For long-term storage of Potcoin you should use a cold wallet storage.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" data-background-color="green">
+                        <h4 class="title"><strong>Step 1:</strong>Get your random seed</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="cta">
+                            <button type="button" class="btn btn-primary btn-block" v-on:click="generate()">
+                                Generate My 12 words
+                            </button>
                         </div>
-                        <div class="modal-body">
-                            <div>
-                                <p>Your Seed</p>
+                        <div class="well">
+                            <h1>{{ mnemo }}</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" data-background-color="green">
+                        <h4 class="title"><strong>Step 2:</strong> Confirm your seed</h4>
+                    </div>
+                    <div class="card-content">
+                        <form v-on:submit.prevent="onSubmit" autocomplete="off">
+                            <div class="alert alert-warning" role="alert">
+                                <p>Be sure to write down <strong>your 12 words</strong> and password (optional), and keep in a safe place.</p>
+                                <p>It is the only way to recover your wallet.</p>
+                            </div>
+                            <div class="intro-inputs">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
-                                  <input type="text" class="form-control" placeholder="Enter your seed" name="mnemo" required v-model="mnemo">
+                                  <input type="text" class="form-control" placeholder="12 words" name="mnemo" required v-model="mnemo">
                                 </div>
                             </div>
-                            <br>
-                            <div>
-                                <p>Your Password (If Created)</p>
+                            <div class="intro-inputs">
                                 <div class="input-group">
                                   <span class="input-group-addon"><i class="material-icons">lock</i></span>
-                                  <input type="text" class="form-control" placeholder="Enter your password" name="password" v-model="password">
+                                  <input type="text" class="form-control" placeholder="Extra Password (Optional)" name="password" v-model="password">
                                 </div>
                             </div>
-                        </div>
-                        <div class="cta">
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary btn-default" data-dismiss="modal" v-on:click="login">
-                                    Enter
+                            <div class="cta">
+                                <button type="button" class="btn btn-primary btn-block" v-on:click.stop="login">
+                                    I've written down my seed
                                 </button>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Login -->
+            <div class="modal fade" id="myModalLogin">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form v-on:submit.prevent="onSubmit" autocomplete="off">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title"><strong>Login to an existing account</strong></h4>
+                                <p>Don’t yet have an account? <a href="">Create a Potcoin HD WALLET account</a></p>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <p>Your Seed</p>
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="material-icons">vpn_key</i></span>
+                                      <input type="text" class="form-control" placeholder="Enter your seed" name="mnemo" required v-model="mnemo">
+                                    </div>
+                                </div>
+                                <br>
+                                <div>
+                                    <p>Your Password (If Created)</p>
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="material-icons">lock</i></span>
+                                      <input type="text" class="form-control" placeholder="Enter your password" name="password" v-model="password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cta">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary btn-default" data-dismiss="modal" v-on:click="login">
+                                        Enter
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</body>
- -->
 
-<body>
+    <!-- WALLET -->
     <div class="wrapper" id="walletApp">
 
         <div class="sidebar">
             <div class="logo">
                 <a href="/" class="simple-text">
-                    <img src="../assets/img/logo.png" alt="PotCoin Wallet">
+                    <img src="assets/img/logo.png" alt="PotCoin Wallet">
                 </a>
             </div>
             <div class="sidebar-wrapper">
@@ -217,7 +217,7 @@
                         <div class="col-lg-3 col-md-6 col-sm-6" id="send-recieve">
                             <div class="card card-stats">
                                 <div class="card-header" style="background:#256638;color:#fff;">
-                                    <img src="../assets/img/pot.png" alt="canadian currency">
+                                    <img src="assets/img/pot.png" alt="canadian currency">
                                 </div>
                                 <div class="card-content">
                                     <p class="category">Your POT Balance</p>
@@ -230,7 +230,7 @@
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-header" style="background:#fb8c00;color:#fff;">
-                                    <img src="../assets/img/bitcoin.png" alt="canadian currency">
+                                    <img src="assets/img/bitcoin.png" alt="canadian currency">
                                 </div>
                                 <div class="card-content">
                                     <p class="category">POT/BTC</p>
@@ -241,7 +241,7 @@
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-header" style="background:#c7211d;color:#fff;">
-                                    <img src="../assets/img/canada.png" alt="canadian currency">
+                                    <img src="assets/img/canada.png" alt="canadian currency">
                                 </div>
                                 <div class="card-content">
                                     <p class="category">POT/CAD $</p>
@@ -252,7 +252,7 @@
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="card card-stats">
                                 <div class="card-header" style="background:#1c3d7b;color:#fff;">
-                                    <img src="../assets/img/usa.png" alt="canadian currency">
+                                    <img src="assets/img/usa.png" alt="canadian currency">
                                 </div>
                                 <div class="card-content">
                                     <p class="category">POT/USD $</p>
@@ -448,6 +448,7 @@
             </footer>
         </div>
     </div>
+
 </body>
 
 
