@@ -178,14 +178,14 @@
                             <ul>
                                 <li>Price BTC: <strong>{{ potcoin.price_btc }}</strong></li>
                                 <li>Price USD: <strong>{{ potcoin.price_usd }}</strong></li>
-                                <li>Price CDN: <strong>$0.2083</strong></li>
+                                <li>Price CAD: <strong>{{ potcoin.price_cad }}</strong></li>
                                 <li>24h change: <strong>{{ potcoin.percent_change_24h }} %</strong></li>
                                 <li>Status: <strong>Connected</strong><br><small>Last Sync: 1 min 20 sec</small></li>
                             </ul>
                         </div>
                     </div>
                     <div class="refresh">
-                        <button type="button" class="btn btn-primary btn-block">
+                        <button type="button" class="btn btn-primary btn-block" v-on:click="refreshWallet()">
                             Refresh Wallet <i class="material-icons">refresh</i>
                         </button>
                         <button type="button" class="btn btn-white btn-block" v-on:click="logout()">
