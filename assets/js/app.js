@@ -1,6 +1,10 @@
 new Vue({
     el: "#app",
     data: {
+        pollInterval: 60000, //1 minute
+        interval: "",
+        coin: "potcoin",
+        fiat: "CAD",
         currentYear: new Date().getFullYear(),
         potcoin: [],
         mnemo: "",
@@ -17,7 +21,8 @@ new Vue({
         // if xpriv is in memory then is logged
         if (localStorage.getItem("xpriv")) {
             this.logged = true;
-            this.callApi();
+            this.pollInfo();
+
         } else {
             this.generate();
         }
@@ -28,38 +33,49 @@ new Vue({
         },
         login: function() {
             try {
-                this.callApi();
-                //validate
+                this.logged = true;
+                this.pollInfo();
+                //Get the master key
                 var xpriv = Wallet.getMasterKey(this.seed, this.password);
                 // Storage
                 localStorage.setItem("xpriv", xpriv);
                 localStorage.setItem("time", new Date());
-                this.logged = true;
-                // Clear data
+                // Clear useless data
                 this.mnemo = "";
                 this.seed = "";
                 this.password = "";
-
-                //clear form
-                //swap page
             } catch (err) {
                 alert(err.message);
             }
         },
         logout: function() {
             localStorage.clear();
-            this.generate(); // Force a new one when left the wallet
+            this.generate(); // Force a new seed when left the wallet
             this.logged = false;
+            clearInterval(this.interval); // Stops pollInfo
         },
-        callApi: function() {
-            const vm = this;
-            axios.get("https://api.coinmarketcap.com/v1/ticker/potcoin/")
+        callInfoApi: function() {
+            var vm = this;
+            axios.get("https://api.coinmarketcap.com/v1/ticker/" + vm.coin + "/?convert=" + vm.fiat)
                 .then(function(response) {
                     vm.potcoin = response.data[0];
                 })
                 .catch(function(error) {
                     console.log(error);
                 });
+        },
+        pollInfo: function() {
+            if (this.logged) {
+                this.callInfoApi();
+                this.interval = setInterval(function () {
+                    this.callInfoApi();
+                }.bind(this), this.pollInterval);
+            }
+        },
+        refreshWallet: function() {
+            this.callInfoApi();
+            // Get and sum balances
+            // Make some math
         }
     }
 });
