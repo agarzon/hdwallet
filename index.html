@@ -191,9 +191,9 @@
                         <button type="button" class="btn btn-white btn-block" v-on:click="logout()">
                             Logout
                         </button>
-                        <!-- <button onclick="notify.showNotification('top','center')" type="button" rel="tooltip" title="Withdraw" class="btn btn-block">
+                        <button onclick="notify.showNotification('top','center')" type="button" rel="tooltip" title="Withdraw" class="btn btn-block">
                             Alert Example
-                        </button> -->
+                        </button>
                     </div>
                 </div>
             </div>
@@ -476,7 +476,34 @@
 <!-- Material Dashboard javascript methods -->
 <script src="assets/js/material-dashboard.js"></script>
 
-<script>
+<script type="text/javascript">
+    type = ['', 'info', 'success', 'warning', 'danger'];
+    notify = {
+        showNotification: function(from, align) {
+            color = Math.floor((Math.random() * 4) + 1);
+            $.notify({
+                icon: "notifications",
+                message: "Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer."
+            }, {
+                type: type[color],
+                timer: 4000,
+                placement: {
+                    from: from,
+                    align: align
+                }
+            });
+        }
+    }
+    $(document).ready(function(){
+        $('#example').DataTable();
+        var address = "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF";
+        $('#qrcode').qrcode(address);
+        var country = ["PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000"];
+            $("#address").select2({
+            data: country
+        });
+    });
+
     (function() {
         //Wallet.init();
     })();
