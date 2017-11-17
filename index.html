@@ -288,16 +288,17 @@
                                     <table id="addressesTable" class="table table-striped" width="100%" cellspacing="0">
                                         <thead class="text-primary">
                                             <tr>
+                                                <th>#</th>
                                                 <th>Address</th>
                                                 <th>Balance</th>
                                                 <th>Keys</th>
                                                 <th>Send/Receive</th>
-                                                <th>Refresh</th>
+                                                <!-- <th>Refresh</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <crypto-address v-for="address in addresses" :data="address" key="address.id"></crypto-address>
                                             <tr>
+                                                <td>0</td>
                                                 <td>PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF</td>
                                                 <td>2000000</td>
                                                 <td>
@@ -313,12 +314,13 @@
                                                         <i class="material-icons">move_to_inbox</i>
                                                     </button>
                                                 </td>
-                                                <td>
+                                                <!-- <td>
                                                     <button type="button" rel="tooltip" title="Refresh" class="btn btn-warning btn-simple btn-xs">
                                                         <i class="material-icons">refresh</i>
                                                     </button>
-                                                </td>
+                                                </td> -->
                                             </tr>
+                                            <tr is="crypto-address" v-for="address in addresses" :data="address" key="address.id"></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -423,7 +425,6 @@
 <!--   Core JS Files   -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/vue/dist/vue.js"></script>
-<script src="bower_components/axios/dist/axios.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.3.4/vue-resource.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
@@ -437,9 +438,9 @@
 <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="bower_components/select2/dist/js/select2.min.js"></script>
-<script src="assets/js/perfect-scrollbar.jquery.min.js"></script>
+<!-- <script src="assets/js/perfect-scrollbar.jquery.min.js"></script>
 <script src="assets/js/arrive.min.js"></script>
-
+ -->
 <!--  Notifications Plugin    -->
 <script src="assets/js/bootstrap-notify.js"></script>
 <!-- Material Dashboard javascript methods -->
@@ -463,17 +464,12 @@ notify = {
     }
 };
 
-$(document).ready(function() {
-    $('#addressesTable').DataTable();
-    var address = "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF";
-    $('#qrcode').qrcode(address);
-    var country = ["PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000"];
-    $("#address").select2({
-        data: country
-    });
-});
-
 (function() {
+    $('#addressesTable').DataTable();
+    $('#qrcode').qrcode("PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF");
+    $("#address").select2({
+        data: ["PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000"]
+    });
     //Wallet.init();
 })();
 </script>

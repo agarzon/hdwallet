@@ -1,6 +1,12 @@
 // AddressLIne
 Vue.component('crypto-address', {
-  template: '<tr><td>{{ data.address }}</td><td>{{ data.balance }}</td></tr>',
+  template: `<tr>
+    <td>{{ data.id }}</td>
+    <td>{{ data.address }}</td>
+    <td>{{ data.balance }}</td>
+    <td>X</td>
+    <td>X</td>
+  </tr>`,
   props: ['data'],
 });
 

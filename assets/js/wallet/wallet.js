@@ -46,7 +46,7 @@ var Wallet = (function() {
         // Validate xpriv?
 
         var hdPrivateKey = new bitcore.HDPrivateKey(xpriv);
-        console.log(hdPrivateKey);
+        //console.log(hdPrivateKey);
         //var hdPublicKey = hdPrivateKey.hdPublicKey;
         //console.log(hdPublicKey); // kind of useless, since won't be used for derivation
 
