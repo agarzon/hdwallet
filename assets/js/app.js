@@ -1,3 +1,9 @@
+// AddressLIne
+Vue.component('crypto-address', {
+  template: '<tr><td>{{ data.address }}</td><td>{{ data.balance }}</td></tr>',
+  props: ['data'],
+});
+
 new Vue({
     el: "#app",
     data: {
@@ -11,6 +17,7 @@ new Vue({
         seed: "",
         password: "",
         logged: false,
+        addresses: [],
     },
     created: function() {
         if (typeof(Storage) === "undefined") {
@@ -19,10 +26,11 @@ new Vue({
         }
 
         // if xpriv is in memory then is logged
-        if (localStorage.getItem("xpriv")) {
+        var xpriv = localStorage.getItem("xpriv");
+        if (xpriv) {
             this.logged = true;
             this.pollInfo();
-
+            this.addresses = Wallet.generateHD(xpriv);
         } else {
             this.generate();
         }
@@ -52,6 +60,7 @@ new Vue({
             localStorage.clear();
             this.generate(); // Force a new seed when left the wallet
             this.logged = false;
+            this.addresses = [];
             clearInterval(this.interval); // Stops pollInfo
         },
         callInfoApi: function() {
