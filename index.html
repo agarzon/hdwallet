@@ -296,7 +296,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <crypto-address v-for="address in addresses" :data="address"></crypto-address>
+                                            <crypto-address v-for="address in addresses" :data="address" key="address.id"></crypto-address>
                                             <tr>
                                                 <td>PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF</td>
                                                 <td>2000000</td>
@@ -424,6 +424,7 @@
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/vue/dist/vue.js"></script>
 <script src="bower_components/axios/dist/axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.3.4/vue-resource.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
 <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
@@ -438,6 +439,7 @@
 <script src="bower_components/select2/dist/js/select2.min.js"></script>
 <script src="assets/js/perfect-scrollbar.jquery.min.js"></script>
 <script src="assets/js/arrive.min.js"></script>
+
 <!--  Notifications Plugin    -->
 <script src="assets/js/bootstrap-notify.js"></script>
 <!-- Material Dashboard javascript methods -->

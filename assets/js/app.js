@@ -64,13 +64,12 @@ new Vue({
             clearInterval(this.interval); // Stops pollInfo
         },
         callInfoApi: function() {
-            var vm = this;
-            axios.get("https://api.coinmarketcap.com/v1/ticker/" + vm.coin + "/?convert=" + vm.fiat)
-                .then(function(response) {
-                    vm.potcoin = response.data[0];
-                })
-                .catch(function(error) {
-                    console.log(error);
+            //var vm = this;
+            this.$http.get("https://api.coinmarketcap.com/v1/ticker/" + this.coin + "/?convert=" + this.fiat)
+                .then(response => {
+                    this.potcoin = response.body[0];
+                }, response => {
+                    console.error(error);
                 });
         },
         pollInfo: function() {
