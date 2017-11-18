@@ -421,6 +421,11 @@
 <script type="text/javascript">
 
 (function() {
+    if (typeof(Storage) === "undefined") {
+        alert("Sorry! No Web Storage support for your browser.");
+        window.location.href = "sorry.html"; // Go home, do not insist!
+    }
+
     // Default settings for notify
     $.notifyDefaults({
         type: 'danger',

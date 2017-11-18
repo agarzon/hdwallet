@@ -42,11 +42,6 @@ new Vue({
         addresses: [],
     },
     created: function() {
-        if (typeof(Storage) === "undefined") {
-            alert("Sorry! No Web Storage support for your browser.");
-            window.location.href = "/"; // Go home, do not insist!
-        }
-
         // if xpriv is in memory then is logged
         var xpriv = localStorage.getItem("xpriv");
         if (xpriv) {
