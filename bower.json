@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "axios": "^0.17.1",
     "bitcore-explorers": "^1.0.1",
     "bitcore-lib": "^0.14.0",
     "bitcore-mnemonic": "^1.2.5",
@@ -26,6 +25,6 @@
     "jquery": "^3.2.1",
     "jquery-qrcode": "*",
     "select2": "^4.0.5",
-    "vue": "^2.5.3",
+    "vue": "^2.5.3"
   }
 }

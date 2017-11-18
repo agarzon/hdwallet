@@ -4,10 +4,26 @@ Vue.component('crypto-address', {
     <td>{{ data.id }}</td>
     <td>{{ data.address }}</td>
     <td>{{ data.balance }}</td>
-    <td>X</td>
-    <td>X</td>
+    <td>
+        <button type="button" rel="tooltip" title="Show Private Key" class="btn btn-info btn-simple btn-xs" v-on:click="showPrivate(data.privatekey)">
+            <i class="material-icons">vpn_key</i>
+        </button>
+    </td>
+    <td>
+        <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalSend">
+            <i class="material-icons">send</i>
+        </button>
+        <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalReceive">
+            <i class="material-icons">move_to_inbox</i>
+        </button>
+    </td>
   </tr>`,
   props: ['data'],
+      methods: {
+        showPrivate: function(privatekey) {
+            $.notify(privatekey);
+        },
+      }
 });
 
 new Vue({
@@ -59,7 +75,7 @@ new Vue({
                 this.logged = true;
                 this.pollInfo();
             } catch (err) {
-                alert(err.message);
+                $.notify(err.message);
             }
         },
         logout: function() {
@@ -70,13 +86,17 @@ new Vue({
             clearInterval(this.interval); // Stops pollInfo
         },
         callInfoApi: function() {
-            //var vm = this;
-            this.$http.get("https://api.coinmarketcap.com/v1/ticker/" + this.coin + "/?convert=" + this.fiat)
-                .then(response => {
-                    this.potcoin = response.body[0];
-                }, response => {
+            var self = this;
+            $.ajax({
+                url: "https://api.coinmarketcap.com/v1/ticker/" + self.coin + "/?convert=" + self.fiat,
+                method: 'GET',
+                success: function (data) {
+                    self.potcoin = data[0];
+                },
+                error: function (error) {
                     console.error(error);
-                });
+                }
+            });
         },
         pollInfo: function() {
             if (this.logged) {
@@ -90,6 +110,6 @@ new Vue({
             this.callInfoApi();
             // Get and sum balances
             // Make some math
-        }
+        },
     }
 });
