@@ -47,8 +47,6 @@ new Vue({
         },
         login: function() {
             try {
-                this.logged = true;
-                this.pollInfo();
                 //Get the master key
                 var xpriv = Wallet.getMasterKey(this.seed, this.password);
                 // Storage
@@ -58,6 +56,8 @@ new Vue({
                 this.mnemo = "";
                 this.seed = "";
                 this.password = "";
+                this.logged = true;
+                this.pollInfo();
             } catch (err) {
                 alert(err.message);
             }
