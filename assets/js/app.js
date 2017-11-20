@@ -29,6 +29,9 @@ Vue.component('crypto-address', {
 new Vue({
     el: "#app",
     data: {
+        urlToCheck: "https://chain.potcoin.com/api/peer",
+        isOnline: false,
+        timeAgo:"",
         pollInterval: 60000, //1 minute
         interval: "",
         coin: "potcoin",
@@ -62,7 +65,7 @@ new Vue({
                 var xpriv = Wallet.getMasterKey(this.seed, this.password);
                 // Storage
                 localStorage.setItem("xpriv", xpriv);
-                localStorage.setItem("time", new Date());
+                localStorage.setItem("loginTime", moment().format());
                 // Clear useless data
                 this.mnemo = "";
                 this.seed = "";
@@ -77,6 +80,7 @@ new Vue({
             localStorage.clear();
             this.generate(); // Force a new seed when left the wallet
             this.logged = false;
+            this.timeAgo = "";
             this.addresses = [];
             clearInterval(this.interval); // Stops pollInfo
         },
@@ -93,16 +97,35 @@ new Vue({
                 }
             });
         },
+        checkOnline: function() {
+            var self = this;
+            $.ajax({
+                url: self.urlToCheck,
+                method: 'GET',
+                success: function (data) {
+                    self.isOnline = true;
+                    localStorage.setItem("lastSync", moment().format());
+                    self.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
+                },
+                error: function (error) {
+                    self.isOnline = false;
+                    if (localStorage.getItem("lastSync")) {
+                        self.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
+                    }
+                }
+            });
+        },
         pollInfo: function() {
             if (this.logged) {
-                this.callInfoApi();
+                this.refreshWallet();
                 this.interval = setInterval(function () {
-                    this.callInfoApi();
+                    this.refreshWallet();
                 }.bind(this), this.pollInterval);
             }
         },
         refreshWallet: function() {
             this.callInfoApi();
+            this.checkOnline();
             // Get and sum balances
             // Make some math
         },

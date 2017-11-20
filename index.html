@@ -171,8 +171,10 @@
                                 <li>Price USD: <strong>{{ potcoin.price_usd }}</strong></li>
                                 <li>Price CAD: <strong>{{ potcoin.price_cad }}</strong></li>
                                 <li>24h change: <strong>{{ potcoin.percent_change_24h }} %</strong></li>
-                                <li>Status: <strong>Connected</strong>
-                                    <br><small>Last Sync: 1 min 20 sec</small></li>
+                                <li>Status:
+                                    <strong v-if="isOnline">Connected</strong>
+                                    <strong v-else>Disconnected</strong>
+                                    <br><small>Last sync: {{ timeAgo }}</small></li>
                             </ul>
                         </div>
                     </div>
@@ -410,6 +412,7 @@
 <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="bower_components/select2/dist/js/select2.min.js"></script>
+<script src="bower_components/moment/moment.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="assets/js/perfect-scrollbar.jquery.min.js"></script>
 <script src="assets/js/arrive.min.js"></script>
