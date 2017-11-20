@@ -1,9 +1,9 @@
 // AddressLIne
 Vue.component('crypto-address', {
-  template: `<tr>
+    template: `<tr>
     <td>{{ data.id }}</td>
     <td>{{ data.address }}</td>
-    <td>{{ data.balance }}</td>
+    <td>{{ balance }}</td>
     <td>
         <button type="button" rel="tooltip" title="Show Private Key" class="btn btn-info btn-simple btn-xs" v-on:click="showPrivate(data.privatekey)">
             <i class="material-icons">vpn_key</i>
@@ -17,13 +17,31 @@ Vue.component('crypto-address', {
             <i class="material-icons">move_to_inbox</i>
         </button>
     </td>
-  </tr>`,
-  props: ['data'],
-      methods: {
+    </tr>`,
+    props: ['data'],
+    data: function() {
+        return {
+            balance: 'loading...'
+        };
+    },
+    mounted: function() {
+        var self = this;
+        $.ajax({
+            url: "https://chain.potcoin.com/api/addr/" + self.data.address,
+            method: 'GET',
+            success: function(data) {
+                self.balance = data.balance;
+            },
+            error: function(error) {
+                self.balance = 'error';
+            }
+        });
+    },
+    methods: {
         showPrivate: function(privatekey) {
             $.notify(privatekey);
         },
-      }
+    }
 });
 
 new Vue({
@@ -31,7 +49,7 @@ new Vue({
     data: {
         urlToCheck: "https://chain.potcoin.com/api/peer",
         isOnline: false,
-        timeAgo:"",
+        timeAgo: "",
         pollInterval: 60000, //1 minute
         interval: "",
         coin: "potcoin",
@@ -44,7 +62,7 @@ new Vue({
         logged: false,
         addresses: [],
     },
-    created: function() {
+    mounted: function() {
         // if xpriv is in memory then is logged
         var xpriv = localStorage.getItem("xpriv");
         if (xpriv) {
@@ -89,10 +107,10 @@ new Vue({
             $.ajax({
                 url: "https://api.coinmarketcap.com/v1/ticker/" + self.coin + "/?convert=" + self.fiat,
                 method: 'GET',
-                success: function (data) {
+                success: function(data) {
                     self.potcoin = data[0];
                 },
-                error: function (error) {
+                error: function(error) {
                     console.error(error);
                 }
             });
@@ -102,12 +120,12 @@ new Vue({
             $.ajax({
                 url: self.urlToCheck,
                 method: 'GET',
-                success: function (data) {
+                success: function(data) {
                     self.isOnline = true;
                     localStorage.setItem("lastSync", moment().format());
                     self.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
                 },
-                error: function (error) {
+                error: function(error) {
                     self.isOnline = false;
                     if (localStorage.getItem("lastSync")) {
                         self.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
@@ -118,7 +136,7 @@ new Vue({
         pollInfo: function() {
             if (this.logged) {
                 this.refreshWallet();
-                this.interval = setInterval(function () {
+                this.interval = setInterval(function() {
                     this.refreshWallet();
                 }.bind(this), this.pollInterval);
             }

@@ -54,8 +54,7 @@ var Wallet = (function() {
             var derived = hdPrivateKey.derive(derivationPath).derive(i);
             var address = new bitcore.Address(derived.publicKey).toString();
             var privatekey = derived.privateKey.toWIF();
-            var balance = 0;
-            addresses.push({ id: i, address: address, privatekey: privatekey, balance: balance });
+            addresses.push({ id: i, address: address, privatekey: privatekey });
         }
 
         return addresses;
