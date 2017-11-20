@@ -44,8 +44,8 @@ var Wallet = (function() {
 
     function generateHD(xpriv) {
         // Validate xpriv?
-
-        var hdPrivateKey = new bitcore.HDPrivateKey(xpriv);
+        setNetwork(); // Use the network
+        var hdPrivateKey = bitcore.HDPrivateKey(xpriv);
         //console.log(hdPrivateKey);
         //var hdPublicKey = hdPrivateKey.hdPublicKey;
         //console.log(hdPublicKey); // kind of useless, since won't be used for derivation
@@ -69,7 +69,7 @@ var Wallet = (function() {
             throw new Error("Destination address is not valid.");
         }
         // validate amount as bigint and set
-        //
+
         if (validatesPriv(privatekey) === false) {
             throw new Error("PrivateKey is not valid.");
         }
@@ -82,6 +82,7 @@ var Wallet = (function() {
             // validate amount is available in balance
             // validate fee is acceptable.
             console.log(utxos);
+            setNetwork(); // Use the network
             var transaction = new bitcore.Transaction()
                 .from(utxos)
                 .to(desination, amount)
@@ -147,14 +148,14 @@ var Wallet = (function() {
     }
 
     // main init method
-    function init() {
+    function setNetwork() {
         var AltNet = new bitcore.Networks.add(PotNet); // Set potcoin network as default
         bitcore.Networks.defaultNetwork = AltNet;
     }
 
     /* =============== export public methods =============== */
     return {
-        init: init,
+        //init: init, // no init for now
         generateNemo: generateNemo,
         validatesNemo: validatesNemo, // Useful only with generateHD
         validatesPriv: validatesPriv, // Useful only to import
