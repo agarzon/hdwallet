@@ -1,6 +1,6 @@
 ## Things to do
 
-- [ ] Sum all balances
+- [x] Sum all balances
 - [ ] Fix left menu on login.
 - [ ] Load addresses on login
 - [ ] Feed addresses for mobile (select2)

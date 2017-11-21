@@ -25,12 +25,16 @@ Vue.component('crypto-address', {
         };
     },
     mounted: function() {
+        localStorage.setItem("totalBalance", 0);
         var self = this;
         $.ajax({
             url: "https://chain.potcoin.com/api/addr/" + self.data.address,
             method: 'GET',
             success: function(data) {
-                self.balance = data.balance;
+                self.balance = numeral(data.balance).format('0.00000000');
+                var totalBalance = numeral(localStorage.getItem("totalBalance")).format('0.00000000');
+                var sum = parseFloat(totalBalance) + parseFloat(self.balance);
+                localStorage.setItem("totalBalance", numeral(sum).format('0.00000000'));
             },
             error: function(error) {
                 self.balance = 'error';

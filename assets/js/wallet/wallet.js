@@ -146,7 +146,6 @@ var Wallet = (function() {
         throw new Error("No address provided.");
     }
 
-    // main init method
     function setNetwork() {
         var AltNet = new bitcore.Networks.add(PotNet); // Set potcoin network as default
         bitcore.Networks.defaultNetwork = AltNet;
