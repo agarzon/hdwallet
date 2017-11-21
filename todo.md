@@ -3,9 +3,11 @@
 - [ ] Sum all balances
 - [ ] Fix left menu on login.
 - [ ] Load addresses on login
+- [ ] Feed addresses for mobile (select2)
 - [ ] Calculate the other boxes based in balance.
 - [ ] Normalize numbers and currencies formats.
-- [ ] Pass address to modal
+- [x] Pass address to modal
+- [x] Show the right QR
 - [ ] Submit the transaction
 - [ ] Fix some design bugs
 - [ ] Review all text

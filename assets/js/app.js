@@ -1,4 +1,4 @@
-// AddressLIne
+// AddressLine
 Vue.component('crypto-address', {
     template: `<tr>
     <td>{{ data.id }}</td>
@@ -10,10 +10,10 @@ Vue.component('crypto-address', {
         </button>
     </td>
     <td>
-        <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalSend">
+        <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalSend">
             <i class="material-icons">send</i>
         </button>
-        <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" data-target="#myModalReceive">
+        <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalReceive">
             <i class="material-icons">move_to_inbox</i>
         </button>
     </td>

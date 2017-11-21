@@ -366,14 +366,12 @@
                                 <h4 class="modal-title"><strong>Receive PotCoin</strong></h4>
                             </div>
                             <div class="modal-body">
-                                <div>
-                                    <div id="qrcode"></div>
-                                    <br>
-                                    <p>Address</p>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="material-icons">location_on</i></span>
-                                        <input type="text" class="form-control" value="PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF" readonly>
-                                    </div>
+                                <div id="qrcode"></div>
+                                <br>
+                                <p>Address</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="material-icons">location_on</i></span>
+                                    <input type="text" class="form-control" name="address" readonly>
                                 </div>
                                 <br>
                                 <div class="alert alert-warning" role="alert">
@@ -452,9 +450,17 @@
         //"info":     false
 
     });
-    $('#qrcode').qrcode("PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF");
+
     $("#address").select2({
         data: ["PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000", "PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF | 20000"]
+    });
+
+    // Pass address to modal myModalReceive
+    $('#myModalReceive').on('show.bs.modal', function(e) {
+        var address = $(e.relatedTarget).data('address');
+        $(e.currentTarget).find('input[name="address"]').val(address);
+        $(e.currentTarget).find('#qrcode').html('').qrcode(address);
+        //$('#qrcode').qrcode(address);
     });
 })();
 </script>
