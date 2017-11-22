@@ -1,6 +1,8 @@
 ## Things to do
 
 - [x] Sum all balances
+- [ ] Show balance on login
+- [ ] Recall balances manually
 - [ ] Fix left menu on login.
 - [ ] Load addresses on login
 - [ ] Feed addresses for mobile (select2)

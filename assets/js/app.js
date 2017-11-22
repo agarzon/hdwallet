@@ -48,7 +48,7 @@ Vue.component('crypto-address', {
     }
 });
 
-new Vue({
+var vm = new Vue({
     el: "#app",
     data: {
         urlToCheck: "https://chain.potcoin.com/api/peer",
@@ -59,12 +59,13 @@ new Vue({
         coin: "potcoin",
         fiat: "CAD",
         currentYear: new Date().getFullYear(),
-        potcoin: [],
+        potcoin: {},
         mnemo: "",
         seed: "",
         password: "",
         logged: false,
         addresses: [],
+        totalBalance: 0,
     },
     mounted: function() {
         // if xpriv is in memory then is logged
@@ -75,6 +76,17 @@ new Vue({
             this.addresses = Wallet.generateHD(xpriv);
         } else {
             this.generate();
+        }
+    },
+    computed: {
+        totalBtc: function() {
+            return this.totalBalance * 585858;
+        },
+        totalCad: function() {
+            return this.totalBalance * 1111;
+        },
+        totalUsd: function() {
+            return this.totalBalance * 9999;
         }
     },
     methods: {
@@ -94,6 +106,7 @@ new Vue({
                 this.password = "";
                 this.logged = true;
                 this.pollInfo();
+                this.addresses = Wallet.generateHD(xpriv);
             } catch (err) {
                 $.notify(err.message);
             }
@@ -113,6 +126,7 @@ new Vue({
                 method: 'GET',
                 success: function(data) {
                     self.potcoin = data[0];
+                    self.totalBalance = localStorage.getItem("totalBalance");
                 },
                 error: function(error) {
                     console.error(error);
@@ -148,8 +162,6 @@ new Vue({
         refreshWallet: function() {
             this.callInfoApi();
             this.checkOnline();
-            // Get and sum balances
-            // Make some math
         },
-    }
+    },
 });

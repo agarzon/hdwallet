@@ -211,8 +211,8 @@
                                         <img src="assets/img/pot.png" alt="canadian currency">
                                     </div>
                                     <div class="card-content">
-                                        <p class="category">Your POT Balance</p>
-                                        <h3 class="title">1000000 <small>POT</small>
+                                        <p class="category">Your {{ potcoin.symbol }} Balance</p>
+                                        <h3 class="title">{{ totalBalance }} <small>{{ potcoin.symbol }}</small>
                                         </h3>
                                     </div>
                                 </div>
@@ -223,8 +223,8 @@
                                         <img src="assets/img/bitcoin.png" alt="canadian currency">
                                     </div>
                                     <div class="card-content">
-                                        <p class="category">POT/BTC</p>
-                                        <h3 class="title">2.515305154</h3>
+                                        <p class="category">{{ potcoin.symbol }}/BTC</p>
+                                        <h3 class="title">{{ totalBtc }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -234,8 +234,8 @@
                                         <img src="assets/img/canada.png" alt="canadian currency">
                                     </div>
                                     <div class="card-content">
-                                        <p class="category">POT/CAD $</p>
-                                        <h3 class="title">$159,200</h3>
+                                        <p class="category">{{ potcoin.symbol }}/CAD $</p>
+                                        <h3 class="title">{{ totalCad }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -245,8 +245,8 @@
                                         <img src="assets/img/usa.png" alt="canadian currency">
                                     </div>
                                     <div class="card-content">
-                                        <p class="category">POT/USD $</p>
-                                        <h3 class="title">$100,500</h3>
+                                        <p class="category">{{ potcoin.symbol }}/USD $</p>
+                                        <h3 class="title">{{ totalUsd }}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -375,7 +375,7 @@
                                 </div>
                                 <br>
                                 <div class="alert alert-warning" role="alert">
-                                    <p>Depositing tokens to this address other than <strong>POT</strong> will result in your funds being lost.</p>
+                                    <p>Depositing tokens to this address other than <strong>{{ potcoin.symbol }}</strong> will result in your funds being lost.</p>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -398,6 +398,7 @@
 <!--   Core JS Files   -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/bitcore-lib/bitcore-lib.js"></script>
 <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
