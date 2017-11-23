@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 // AddressLine
 Vue.component('crypto-address', {
     template: `<tr>
@@ -48,7 +50,8 @@ Vue.component('crypto-address', {
     }
 });
 
-var vm = new Vue({
+Vue.use(AsyncComputed);
+const vm = new Vue({
     el: "#app",
     data: {
         urlToCheck: "https://chain.potcoin.com/api/peer",
@@ -65,7 +68,6 @@ var vm = new Vue({
         password: "",
         logged: false,
         addresses: [],
-        totalBalance: 0,
     },
     mounted: function() {
         // if xpriv is in memory then is logged
@@ -78,16 +80,33 @@ var vm = new Vue({
             this.generate();
         }
     },
-    computed: {
-        totalBtc: function() {
-            return this.totalBalance * 585858;
+    asyncComputed: {
+        potcoin: {
+            get() {
+                return this.$http.get("https://api.coinmarketcap.com/v1/ticker/" + this.coin + "/?convert=" + this.fiat)
+                    .then(response => response.data[0]);
+            },
         },
-        totalCad: function() {
-            return this.totalBalance * 1111;
+        totalBalance: {
+            get() {
+                return localStorage.getItem("totalBalance");
+            }
         },
-        totalUsd: function() {
-            return this.totalBalance * 9999;
-        }
+        totalBtc() {
+            return new Promise(resolve =>
+                setTimeout(() => resolve(numeral(this.totalBalance * this.potcoin.price_btc).format('0.00000000')), 1000)
+            );
+        },
+        totalCad() {
+            return new Promise(resolve =>
+                setTimeout(() => resolve(numeral(this.totalBalance * this.potcoin.price_cad).format('0.00000000')), 1000)
+            );
+        },
+        totalUsd() {
+            return new Promise(resolve =>
+                setTimeout(() => resolve(numeral(this.totalBalance * this.potcoin.price_usd).format('0.00000000')), 1000)
+            );
+        },
     },
     methods: {
         generate: function() {
@@ -117,21 +136,10 @@ var vm = new Vue({
             this.logged = false;
             this.timeAgo = "";
             this.addresses = [];
+            this.totalBalance = 0;
+            this.totalBtc = 0;
+            this.totalCad = 0;
             clearInterval(this.interval); // Stops pollInfo
-        },
-        callInfoApi: function() {
-            var self = this;
-            $.ajax({
-                url: "https://api.coinmarketcap.com/v1/ticker/" + self.coin + "/?convert=" + self.fiat,
-                method: 'GET',
-                success: function(data) {
-                    self.potcoin = data[0];
-                    self.totalBalance = localStorage.getItem("totalBalance");
-                },
-                error: function(error) {
-                    console.error(error);
-                }
-            });
         },
         checkOnline: function() {
             var self = this;
@@ -160,8 +168,9 @@ var vm = new Vue({
             }
         },
         refreshWallet: function() {
-            this.callInfoApi();
             this.checkOnline();
+            // Reload addresses and get balances
+            // trigger reload balances
         },
     },
 });
