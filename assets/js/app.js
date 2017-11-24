@@ -1,5 +1,5 @@
 // AddressLine
-Vue.component('crypto-address', {
+var cryptoAddress = Vue.component('crypto-address', {
     template: `<tr>
     <td>{{ data.id }}</td>
     <td>{{ data.address }}</td>
@@ -117,6 +117,10 @@ var vm = new Vue({
             this.logged = false;
             this.timeAgo = "";
             this.addresses = [];
+            this.totalBalance = 0;
+            this.totalBtc = 0;
+            this.totalCad = 0;
+            this.totalUsd = 0;
             clearInterval(this.interval); // Stops pollInfo
         },
         callInfoApi: function() {
