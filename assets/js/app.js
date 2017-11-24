@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
 // AddressLine
-Vue.component('crypto-address', {
+/*Vue.component('crypto-address', {
     template: `<tr>
     <td>{{ data.id }}</td>
     <td>{{ data.address }}</td>
@@ -49,7 +49,7 @@ Vue.component('crypto-address', {
         },
     }
 });
-
+*/
 Vue.use(AsyncComputed);
 const vm = new Vue({
     el: "#app",
@@ -68,6 +68,7 @@ const vm = new Vue({
         password: "",
         logged: false,
         addresses: [],
+        //balance: 0,
     },
     mounted: function() {
         // if xpriv is in memory then is logged
@@ -86,6 +87,11 @@ const vm = new Vue({
                 return this.$http.get("https://api.coinmarketcap.com/v1/ticker/" + this.coin + "/?convert=" + this.fiat)
                     .then(response => response.data[0]);
             },
+        },
+        balance: {
+            get() {
+                return localStorage.getItem("totalBalance");
+            }
         },
         totalBalance: {
             get() {
@@ -115,7 +121,8 @@ const vm = new Vue({
         login: function() {
             try {
                 //Get the master key
-                var xpriv = Wallet.getMasterKey(this.seed, this.password);
+                //var xpriv = Wallet.getMasterKey(this.seed, this.password);
+                var xpriv = Wallet.getMasterKey("film speed midnight cave come federal horror unusual cute trap congress inherit", "superPassword");
                 // Storage
                 localStorage.setItem("xpriv", xpriv);
                 localStorage.setItem("loginTime", moment().format());
@@ -171,6 +178,16 @@ const vm = new Vue({
             this.checkOnline();
             // Reload addresses and get balances
             // trigger reload balances
+        },
+        showPrivate: function(privatekey) {
+            $.notify(privatekey);
+        },
+        getBalance: function(address) {
+            //return 'hola' + address;
+            this.$http.get("https://chain.potcoin.com/api/addr/" + address).then(function(response) {
+                this.balance = response.body.balance;
+            });
+   //         return this.balance;
         },
     },
 });
