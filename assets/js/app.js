@@ -34,8 +34,9 @@ const vm = new Vue({
             return this.getCryptoInfo();
         },
         totalBalance() {
-            return 0;
-            return localStorage.getItem("totalBalance");
+            return new Promise(resolve =>
+                setTimeout(() => resolve(localStorage.getItem("totalBalance")), 1000)
+            );
         },
         totalBtc() {
             return new Promise(resolve =>
@@ -115,8 +116,9 @@ const vm = new Vue({
             }
         },
         refreshWallet: function() {
-            this.checkOnline();
-            this.getCryptoInfo();
+            location.reload();
+            //this.checkOnline();
+            //this.getCryptoInfo();
             // Reload addresses and get balances
             // trigger reload balances
         },
@@ -158,8 +160,14 @@ const vm = new Vue({
                     $.notify(privatekey);
                 },
                 getBalanceByAddr: function(address) {
-                    return this.$http.get("https://chain.potcoin.com/api/addr/" + address)
-                        .then(response => numeral(response.body.balance).format('0.00000000'))
+                    localStorage.setItem("totalBalance", 0);
+                    return this.$http.get("https://chain.potcoin.com/api/addr/" + address).then(response => {
+                        var balance = numeral(response.body.balance).format('0.00000000');
+                        var totalBalance = numeral(localStorage.getItem("totalBalance")).format('0.00000000');
+                        var sum = parseFloat(totalBalance) + parseFloat(balance);
+                        localStorage.setItem("totalBalance", numeral(sum).format('0.00000000'));
+                        return balance;
+                    });
                 },
             },
         },
