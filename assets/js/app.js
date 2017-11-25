@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+Vue.use(AsyncComputed);
 // AddressLine
 var cryptoAddress = Vue.component('crypto-address', {
     template: `<tr>
@@ -19,75 +21,77 @@ var cryptoAddress = Vue.component('crypto-address', {
     </td>
     </tr>`,
     props: ['data'],
-    data: function() {
-        return {
-            balance: 'loading...'
-        };
-    },
-    mounted: function() {
-        localStorage.setItem("totalBalance", 0);
-        var self = this;
-        $.ajax({
-            url: "https://chain.potcoin.com/api/addr/" + self.data.address,
-            method: 'GET',
-            success: function(data) {
-                self.balance = numeral(data.balance).format('0.00000000');
-                var totalBalance = numeral(localStorage.getItem("totalBalance")).format('0.00000000');
-                var sum = parseFloat(totalBalance) + parseFloat(self.balance);
-                localStorage.setItem("totalBalance", numeral(sum).format('0.00000000'));
+    asyncComputed: {
+        balance: {
+            get() {
+                return this.getBalanceByAddr(this.data.address);
             },
-            error: function(error) {
-                self.balance = 'error';
-            }
-        });
+            default: 'Loading...'
+        }
     },
     methods: {
         showPrivate: function(privatekey) {
             $.notify(privatekey);
         },
-    }
+        getBalanceByAddr: function(address) {
+            return this.$http.get("https://chain.potcoin.com/api/addr/" + address)
+                .then(response => numeral(response.body.balance).format('0.00000000'))
+        },
+   },
+
 });
 
-var vm = new Vue({
+const vm = new Vue({
     el: "#app",
     data: {
         urlToCheck: "https://chain.potcoin.com/api/peer",
         isOnline: false,
         timeAgo: "",
-        pollInterval: 60000, //1 minute
+        pollInterval: 30000, //30 seconds
         interval: "",
         coin: "potcoin",
         fiat: "CAD",
         currentYear: new Date().getFullYear(),
-        potcoin: {},
         mnemo: "",
         seed: "",
         password: "",
         logged: false,
         addresses: [],
-        totalBalance: 0,
     },
     mounted: function() {
         // if xpriv is in memory then is logged
         var xpriv = localStorage.getItem("xpriv");
         if (xpriv) {
             this.logged = true;
-            this.pollInfo();
+            this.timer("start");
             this.addresses = Wallet.generateHD(xpriv);
         } else {
             this.generate();
         }
     },
-    computed: {
-        totalBtc: function() {
-            return this.totalBalance * 585858;
+    asyncComputed: {
+        potcoin() {
+            return this.getCryptoInfo();
         },
-        totalCad: function() {
-            return this.totalBalance * 1111;
+        totalBalance() {
+            return 0;
+            return localStorage.getItem("totalBalance");
         },
-        totalUsd: function() {
-            return this.totalBalance * 9999;
-        }
+        totalBtc() {
+            return new Promise(resolve =>
+                setTimeout(() => resolve(numeral(this.totalBalance * this.potcoin.price_btc).format('0.00000000')), 1000)
+            );
+        },
+        totalCad() {
+            return new Promise(resolve =>
+                setTimeout(() => resolve(numeral(this.totalBalance * this.potcoin.price_cad).format('0.00000000')), 1000)
+            );
+        },
+        totalUsd() {
+            return new Promise(resolve =>
+                setTimeout(() => resolve(numeral(this.totalBalance * this.potcoin.price_usd).format('0.00000000')), 1000)
+            );
+        },
     },
     methods: {
         generate: function() {
@@ -96,16 +100,17 @@ var vm = new Vue({
         login: function() {
             try {
                 //Get the master key
-                var xpriv = Wallet.getMasterKey(this.seed, this.password);
+                //var xpriv = Wallet.getMasterKey(this.seed, this.password);
+                var xpriv = Wallet.getMasterKey("film speed midnight cave come federal horror unusual cute trap congress inherit", "superPassword");
                 // Storage
                 localStorage.setItem("xpriv", xpriv);
                 localStorage.setItem("loginTime", moment().format());
-                // Clear useless data
+                // Clear useless data after get the xpriv
                 this.mnemo = "";
                 this.seed = "";
                 this.password = "";
                 this.logged = true;
-                this.pollInfo();
+                this.timer("start");
                 this.addresses = Wallet.generateHD(xpriv);
             } catch (err) {
                 $.notify(err.message);
@@ -120,52 +125,43 @@ var vm = new Vue({
             this.totalBalance = 0;
             this.totalBtc = 0;
             this.totalCad = 0;
-            this.totalUsd = 0;
-            clearInterval(this.interval); // Stops pollInfo
-        },
-        callInfoApi: function() {
-            var self = this;
-            $.ajax({
-                url: "https://api.coinmarketcap.com/v1/ticker/" + self.coin + "/?convert=" + self.fiat,
-                method: 'GET',
-                success: function(data) {
-                    self.potcoin = data[0];
-                    self.totalBalance = localStorage.getItem("totalBalance");
-                },
-                error: function(error) {
-                    console.error(error);
-                }
-            });
+            this.timer("stop");
         },
         checkOnline: function() {
-            var self = this;
-            $.ajax({
-                url: self.urlToCheck,
-                method: 'GET',
-                success: function(data) {
-                    self.isOnline = true;
-                    localStorage.setItem("lastSync", moment().format());
-                    self.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
-                },
-                error: function(error) {
-                    self.isOnline = false;
-                    if (localStorage.getItem("lastSync")) {
-                        self.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
-                    }
+            this.$http.get(this.urlToCheck).then(response => {
+                this.isOnline = true;
+                localStorage.setItem("lastSync", moment().format());
+                this.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
+            }, response => {
+                this.isOnline = false;
+                if (localStorage.getItem("lastSync")) {
+                    this.timeAgo = moment(localStorage.getItem("lastSync")).fromNow();
                 }
             });
         },
-        pollInfo: function() {
-            if (this.logged) {
-                this.refreshWallet();
+        getCryptoInfo: function() {
+            return this.$http.get("https://api.coinmarketcap.com/v1/ticker/" + this.coin + "/?convert=" + this.fiat)
+                .then(response => response.data[0]);
+        },
+        timer: function(action) {
+            if (action === "start") {
+                this.checkOnline();
                 this.interval = setInterval(function() {
-                    this.refreshWallet();
+                    this.checkOnline();
+                    this.getCryptoInfo();
                 }.bind(this), this.pollInterval);
+            } else if(action === "stop") {
+                clearInterval(this.interval);
             }
         },
         refreshWallet: function() {
-            this.callInfoApi();
             this.checkOnline();
+            this.getCryptoInfo();
+            // Reload addresses and get balances
+            // trigger reload balances
+        },
+        showPrivate: function(privatekey) {
+            $.notify(privatekey);
         },
     },
 });

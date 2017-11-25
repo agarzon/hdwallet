@@ -1,13 +1,13 @@
 ## Things to do
 
 - [x] Sum all balances
-- [ ] Show balance on login
+- [ ] Get balances on login
 - [ ] Recall balances manually
 - [ ] Fix left menu on login.
-- [ ] Load addresses on login
+- [x] Load addresses on login
 - [ ] Feed addresses for mobile (select2)
-- [ ] Calculate the other boxes based in balance.
-- [ ] Normalize numbers and currencies formats.
+- [x] Calculate the other boxes based in balance.
+- [x] Normalize numbers and currencies formats.
 - [x] Pass address to modal
 - [x] Show the right QR
 - [ ] Submit the transaction
