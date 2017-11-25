@@ -326,7 +326,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="well">
-                                    <small>Sent From: <strong>PMxrMz5J1XxBkeGsHEQrLdTd7VVnNchxqF</strong></small>
+                                    <small>Sent From: <strong id="address"></strong></small>
                                     <br>
                                     <small>Balance: <strong>200 000 000</strong></small>
                                 </div>
@@ -464,7 +464,12 @@
         var address = $(e.relatedTarget).data('address');
         $(e.currentTarget).find('input[name="address"]').val(address);
         $(e.currentTarget).find('#qrcode').html('').qrcode(address);
-        //$('#qrcode').qrcode(address);
+    });
+
+    // Pass address to modal myModalSend
+    $('#myModalSend').on('show.bs.modal', function(e) {
+        var address = $(e.relatedTarget).data('address');
+        $(e.currentTarget).find('#address').html(address);
     });
 })();
 </script>
