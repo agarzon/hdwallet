@@ -1,45 +1,5 @@
 /*jshint esversion: 6 */
 Vue.use(AsyncComputed);
-// AddressLine
-var cryptoAddress = Vue.component('crypto-address', {
-    template: `<tr>
-    <td>{{ data.id }}</td>
-    <td>{{ data.address }}</td>
-    <td>{{ balance }}</td>
-    <td>
-        <button type="button" rel="tooltip" title="Show Private Key" class="btn btn-info btn-simple btn-xs" v-on:click="showPrivate(data.privatekey)">
-            <i class="material-icons">vpn_key</i>
-        </button>
-    </td>
-    <td>
-        <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalSend">
-            <i class="material-icons">send</i>
-        </button>
-        <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalReceive">
-            <i class="material-icons">move_to_inbox</i>
-        </button>
-    </td>
-    </tr>`,
-    props: ['data'],
-    asyncComputed: {
-        balance: {
-            get() {
-                return this.getBalanceByAddr(this.data.address);
-            },
-            default: 'Loading...'
-        }
-    },
-    methods: {
-        showPrivate: function(privatekey) {
-            $.notify(privatekey);
-        },
-        getBalanceByAddr: function(address) {
-            return this.$http.get("https://chain.potcoin.com/api/addr/" + address)
-                .then(response => numeral(response.body.balance).format('0.00000000'))
-        },
-   },
-
-});
 
 const vm = new Vue({
     el: "#app",
@@ -150,7 +110,7 @@ const vm = new Vue({
                     this.checkOnline();
                     this.getCryptoInfo();
                 }.bind(this), this.pollInterval);
-            } else if(action === "stop") {
+            } else if (action === "stop") {
                 clearInterval(this.interval);
             }
         },
@@ -162,6 +122,46 @@ const vm = new Vue({
         },
         showPrivate: function(privatekey) {
             $.notify(privatekey);
+        },
+    },
+    components: {
+        'crypto-address': {
+            template: `<tr>
+                <td>{{ data.id }}</td>
+                <td>{{ data.address }}</td>
+                <td>{{ balance }}</td>
+                <td>
+                    <button type="button" rel="tooltip" title="Show Private Key" class="btn btn-info btn-simple btn-xs" v-on:click="showPrivate(data.privatekey)">
+                        <i class="material-icons">vpn_key</i>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalSend">
+                        <i class="material-icons">send</i>
+                    </button>
+                    <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalReceive">
+                        <i class="material-icons">move_to_inbox</i>
+                    </button>
+                </td>
+            </tr>`,
+            props: ['data'],
+            asyncComputed: {
+                balance: {
+                    get() {
+                        return this.getBalanceByAddr(this.data.address);
+                    },
+                    default: 'Loading...'
+                }
+            },
+            methods: {
+                showPrivate: function(privatekey) {
+                    $.notify(privatekey);
+                },
+                getBalanceByAddr: function(address) {
+                    return this.$http.get("https://chain.potcoin.com/api/addr/" + address)
+                        .then(response => numeral(response.body.balance).format('0.00000000'))
+                },
+            },
         },
     },
 });
