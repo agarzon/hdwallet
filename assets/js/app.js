@@ -138,7 +138,7 @@ const vm = new Vue({
                     </button>
                 </td>
                 <td>
-                    <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalSend">
+                    <button type="button" rel="tooltip" title="Send" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" :data-balance="balance" data-target="#myModalSend">
                         <i class="material-icons">send</i>
                     </button>
                     <button type="button" rel="tooltip" title="Receive" class="btn btn-primary btn-simple btn-xs" data-toggle="modal" :data-address="data.address" data-target="#myModalReceive">

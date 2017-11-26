@@ -328,7 +328,7 @@
                                 <div class="well">
                                     <small>Sent From: <strong id="address"></strong></small>
                                     <br>
-                                    <small>Balance: <strong>200 000 000</strong></small>
+                                    <small>Balance: <strong id="balance"></strong></small>
                                 </div>
                                 <p>Send To:</p>
                                 <div class="input-group">
@@ -470,6 +470,8 @@
     $('#myModalSend').on('show.bs.modal', function(e) {
         var address = $(e.relatedTarget).data('address');
         $(e.currentTarget).find('#address').html(address);
+        var balance = $(e.relatedTarget).data('balance');
+        $(e.currentTarget).find('#balance').html(balance);
     });
 })();
 </script>
