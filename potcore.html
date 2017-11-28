@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8" />
     <title></title>
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -13,7 +14,7 @@
     <script src="bower_components/vue/dist/vue.min.js"></script>
     <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="js/potcore/bundle.js"></script>
+    <script src="assets/js/wallet/potcore/bundle-FULLFIXED.js"></script>
     <script>
     var bitcore = require('bitcore');
     var BIP39 = bitcore.BIP39;
@@ -69,12 +70,11 @@
 
 
 
-    var unspent = [{"address":"PFdzfENGEYdfXn6S8AZvRSijKpHixautkq","txid":"dfacccb50563f9025e59aa2638f0510d156b13a72e79470b13aed7af602c109c","vout":1,"ts":1510335058,"scriptPubKey":"76a9144d515dfc23e9a97de075309be0011ef7e44230d388ac","amount":0.076,"confirmations":6,"confirmationsFromCache":true}]
-
+    var unspent = [{"address":"PFdzfENGEYdfXn6S8AZvRSijKpHixautkq","txid":"36b66f96f7083dd45d84dbcde98b1edafa88aeaf572ac247a222f51ba461dfec","vout":1,"ts":1511362937,"scriptPubKey":"21031e4d9fb58a451822fdf9b4fea0e22c33a685097a65a8e8760730dcb6929680e7ac","amount":0.07623689,"confirmations":6,"confirmationsFromCache":true}]
 
     // define transaction output
     var outs = [{
-        address: 'PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE',
+        address: 'PN1EYo1QruMKeWUPfjb1YJyzZYmhWm9wfo', // bittrex
         amount: 0.01
     }];
     // set change address
@@ -86,8 +86,7 @@
     var tx = new TransactionBuilder(opts)
         .setUnspent(unspent)
         .setOutputs(outs)
-        .sign(['UzzW73untSsBtAhwgXTVUYK5Mx5RxpdXZrNSJjszFoj9HEdGdDZ5'])
-        //.sign(['U7Wig5kPqXNN34dLN568hVk9sLsWxK1AbCdex1oRJwCsbFVxUM6K'])
+        .sign(['U7Wig5kPqXNN34dLN568hVk9sLsWxK1AbCdex1oRJwCsbFVxUM6K'])
         .build();
 
     var txid = tx.getHash().toString('hex');
@@ -96,60 +95,6 @@
     console.log('Transaction raw hex dump:');
     console.log(raw_tx);
 
-    throw new Error("STOP");
-
-
-      var peerman = new PeerManager();
-      peerman.addPeer(new Peer('chain.potcoin.com', 4200));
-
-      peerman.on('connect', function() {
-        //var conn = peerman.getActiveConnection();
-        var conn = true;
-        if (conn) {
-            // define transaction output
-            var outs = [{
-                address: 'PG93ec6KmpYKcssFPMW7jKV9uPcAw35SEE',
-                amount: 0.01
-            }];
-            // set change address
-            var opts = {
-                remainderOut: {
-                    address: 'PFdzfENGEYdfXn6S8AZvRSijKpHixautkq'
-                }
-            };
-            var tx = new TransactionBuilder(opts)
-                .setUnspent(unspent)
-                .setOutputs(outs)
-                .sign(['UzzW73untSsBtAhwgXTVUYK5Mx5RxpdXZrNSJjszFoj9HEdGdDZ5'])
-                .build();
-
-            var txid = tx.getHash().toString('hex');
-            console.log('Created transaction with txid ' + txid);
-            var raw_tx = tx.serialize().toString('hex');
-            console.log('Transaction raw hex dump:');
-            console.log('-------------------------------------');
-            console.log(raw_tx);
-            console.log('-------------------------------------');
-          // finally, send transaction to the bitcoin network
-          //conn.sendTx(tx);
-
-          // for now, the network won't respond in any case
-          // (transaction accepted, transaction rejected)
-          // in the future, we may listen to 'reject' message
-          // see https://gist.github.com/gavinandresen/7079034
-        }
-      });
-
-      peerman.start();
-
-
-
-
-    $(function() {
-        var address = 'fake';
-        $('#qrcode').qrcode(address);
-        $('#addr').text(address);
-    });
     </script>
 </body>
 

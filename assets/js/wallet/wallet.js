@@ -86,29 +86,27 @@ var Wallet = (function() {
             var transaction = new bitcore.Transaction()
                 .from(utxos)
                 .to(desination, amount)
-                .fee(300000)
-                .lockUntilDate(new Date()) // Set timestamp into tx
+                //.fee(300000)
+                //.lockUntilDate(new Date()) // Set timestamp into tx
                 .change(address)
                 .sign(privatekey);
 
-            console.log(transaction);
             console.log("Verify = " + transaction.verify());
             console.log("Signature = " + transaction.isFullySigned());
-
             var txSerialized = transaction.serialize();
             console.log(txSerialized);
+            return txSerialized;
+        });
+    }
 
-            //throw new Error("STOP");
-            insight.broadcast(txSerialized, function(err, txId) {
-                if (err) {
-                    console.error(err);
-                    //console.log(JSON.stringify(err));
-                } else {
-                    console.log('Successfully sent: ' + txId);
-                }
-            });
-
-            //return txSerialized;
+    function sendTx(txSerialized) {
+        insight.broadcast(txSerialized, function(err, txId) {
+            if (err) {
+                console.error(err);
+                //console.log(JSON.stringify(err));
+            } else {
+                console.log('Successfully sent: '+txId);
+            }
         });
     }
 
