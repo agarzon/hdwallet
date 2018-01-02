@@ -335,7 +335,7 @@
                                     <span class="input-group-addon">
                                         <i class="material-icons">location_on</i>
                                     </span>
-                                    <input type="text" class="form-control" placeholder="Address">
+                                    <input type="text" name="destination" class="form-control" placeholder="Address" v-model="destination">
                                 </div>
                                 <br>
                                 <p>Amount:</p>
@@ -343,7 +343,7 @@
                                     <span class="input-group-addon">
                                        <span class="icon-potcoin"></span>
                                     </span>
-                                    <input type="text" class="form-control" placeholder="0000">
+                                    <input type="text" name="amount" class="form-control" placeholder="0000" v-model="amount">
                                 </div>
                                 <br>
                                 <div class="alert alert-warning" role="alert">
@@ -352,7 +352,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-white btn-default" data-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">Send</button>
+                                <button type="button" class="btn btn-primary" v-on:click="sendTx()">Send</button>
                             </div>
                         </div>
                     </div>
@@ -406,8 +406,9 @@
 <script src="bower_components/bitcore-explorers/bitcore-explorers.js"></script>
 <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.js"></script>
 <script src="assets/js/material.min.js"></script>
-<script src="assets/js/wallet/wallet.js"></script>
+<script src="assets/js/wallet.js"></script>
 <script src="assets/js/app.js"></script>
+
 <!--  Dynamic Elements plugin -->
 <script src="bower_components/jquery-qrcode/jquery.qrcode.min.js"></script>
 <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>

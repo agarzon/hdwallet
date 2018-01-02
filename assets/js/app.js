@@ -17,6 +17,8 @@ const vm = new Vue({
         password: "",
         logged: false,
         addresses: [],
+        destination: "",
+        amount: 0,
     },
     mounted: function() {
         // if xpriv is in memory then is logged
@@ -124,6 +126,9 @@ const vm = new Vue({
         },
         showPrivate: function(privatekey) {
             $.notify(privatekey);
+        },
+        sendTx: function() {
+            var tx = Wallet.prepareTx("PFdzfENGEYdfXn6S8AZvRSijKpHixautkq ", "PWoPsoU6QW1qr2JW3dkqymjfABt44ZGk34", 1000000, "U7Wig5kPqXNN34dLN568hVk9sLsWxK1AbCdex1oRJwCsbFVxUM6K");
         },
     },
     components: {

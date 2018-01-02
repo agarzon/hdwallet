@@ -61,7 +61,7 @@ var Wallet = (function() {
         return addresses;
     }
 
-    function prepareTX(address, desination, amount, privatekey) {
+    function prepareTx(address, desination, amount, privatekey) {
         if (validatesAddress(address) === false) {
             throw new Error("Source address is not valid.");
         }
@@ -95,6 +95,9 @@ var Wallet = (function() {
             console.log("Signature = " + transaction.isFullySigned());
             var txSerialized = transaction.serialize();
             console.log(txSerialized);
+
+            sendTx(txSerialized);
+
             return txSerialized;
         });
     }
@@ -160,7 +163,8 @@ var Wallet = (function() {
         validatesAddress: validatesAddress,
         getMasterKey: getMasterKey,
         generateHD: generateHD,
-        prepareTX: prepareTX,
+        prepareTx: prepareTx,
+        sendTx: sendTx,
         addresses: addresses,
     };
 }());
